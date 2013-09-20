@@ -1,0 +1,12 @@
+# ignore edited files
+*~
+\#*\#
+*.log
+
+# ignore txt output (an input files use .in)
+*.txt
+
+# ignore object files or exectutable code
+*.exe
+*.o
+*.stackdump

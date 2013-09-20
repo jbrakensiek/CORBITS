@@ -1,0 +1,55 @@
+SHELL = /bin/bash
+CC = g++
+CFLAGS = -c -Wall -O2 -I $(LIB_PATH)
+LDFLAGS = -Wall -O2 -I $(LIB_PATH)
+
+EXAMPLES = kepler-11 period-dist
+
+LIB_PATH = lib
+LIB = 	$(LIB_PATH)/math_misc.cpp \
+	$(LIB_PATH)/point3D.cpp \
+	$(LIB_PATH)/transit.cpp
+LIB_OBJ = $(LIB:.cpp=.o)
+
+KEP11_PATH = examples/kepler-11
+KEP11_SRC = $(KEP11_PATH)/Kepler-11.cpp
+KEP11_OBJ = $(KEP11_SRC:.cpp=.o)
+
+PER_PATH = examples/period-dist
+PER_SRC = $(PER_PATH)/koi_input.cpp \
+	$(PER_PATH)/stat_dist.cpp \
+	$(PER_PATH)/period_dist.cpp
+PER_OBJ = $(PER_SRC:.cpp=.o)
+
+# targets
+
+all: lib examples
+
+lib: $(LIB_OBJ)
+
+examples: $(EXAMPLES)
+
+# ref: http://mrbook.org/tutorials/make
+kepler-11: lib $(KEP11_OBJ)
+	$(CC) $(LDFLAGS) $(LIB_OBJ) $(KEP11_OBJ) -o $(KEP11_PATH)/$@
+
+run-kepler-11: lib kepler-11
+	cd $(KEP11_PATH); ./kepler-11
+
+period-dist: lib $(PER_OBJ)
+	$(CC) $(LDFLAGS) $(LIB_OBJ) $(PER_OBJ) -o $(PER_PATH)/$@
+
+run-period-dist: lib period-dist
+	cd $(PER_PATH); ./grab.sh; ./period-dist
+
+.cpp.o:
+	$(CC) $(CFLAGS) $< -o $@
+
+clean:
+	rm -f $(LIB_PATH)/*.o \
+	$(KEP11_PATH)/*.o \
+	$(KEP11_PATH)/kepler-11 \
+	$(PER_PATH)/*.o \
+	$(PER_PATH)/period-dist \
+	$(PER_PATH)/*.txt \
+	$(PER_PATH)/grab.log
