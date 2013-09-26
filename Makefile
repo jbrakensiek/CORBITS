@@ -1,4 +1,4 @@
-BBB41;291;0cSHELL = /bin/bash
+SHELL = /bin/bash
 CC = g++
 CFLAGS = -c -Wall -O2 -I $(LIB_PATH)
 LDFLAGS = -Wall -O2 -I $(LIB_PATH)
@@ -42,8 +42,11 @@ run-kepler-11: kepler-11
 period-dist: lib $(PER_OBJ)
 	$(CC) $(LDFLAGS) $(LIB_OBJ) $(PER_OBJ) -o $(PER_PATH)/$@
 
-run-period-dist: period-dist
-	cd $(PER_PATH); ./grab.sh; ./period-dist
+$(PER_PATH)/koi-data-edit.txt:
+	cd $(PER_PATH); ./grab.sh
+
+run-period-dist: period-dist $(PER_PATH)/koi-data-edit.txt
+	cd $(PER_PATH); ./period-dist
 
 period-hist: run-period-dist
 	cd $(PER_PATH)/hist; python make_hist.py 2> /dev/null
@@ -58,16 +61,21 @@ run-solar-system: solar-system
 .cpp.o:
 	$(CC) $(CFLAGS) $< -o $@
 
+# remove object files and executables
 clean:
 	rm -f $(LIB_PATH)/*.o \
 	$(KEP11_PATH)/*.o \
 	$(KEP11_PATH)/kepler-11 \
 	$(PER_PATH)/*.o \
 	$(PER_PATH)/period-dist \
-	$(PER_PATH)/*.txt \
-	$(PER_PATH)/stat/*.txt \
-	$(PER_PATH)/hist/*.txt \
-	$(PER_PATH)/grab.log \
 	$(SOLSYS_PATH)/*.o \
 	$(SOLSYS_PATH)/solar-system \
+
+# remove all output files
+clean-all: clean
+	rm -f $(PER_PATH)/*.txt \
+	$(PER_PATH)/stat/*.txt \
+	$(PER_PATH)/hist/*.txt \
+	$(PER_PATH)/hist/*.pdf \
+	$(PER_PATH)/*.log \
 	$(SOLSYS_PATH)/*.csv
