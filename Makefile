@@ -1,4 +1,4 @@
-SHELL = /bin/bash
+BBB41;291;0cSHELL = /bin/bash
 CC = g++
 CFLAGS = -c -Wall -O2 -I $(LIB_PATH)
 LDFLAGS = -Wall -O2 -I $(LIB_PATH)
@@ -29,7 +29,6 @@ lib: $(LIB_OBJ)
 
 examples: $(EXAMPLES)
 
-# ref: http://mrbook.org/tutorials/make
 kepler-11: lib $(KEP11_OBJ)
 	$(CC) $(LDFLAGS) $(LIB_OBJ) $(KEP11_OBJ) -o $(KEP11_PATH)/$@
 
@@ -42,6 +41,10 @@ period-dist: lib $(PER_OBJ)
 run-period-dist: lib period-dist
 	cd $(PER_PATH); ./grab.sh; ./period-dist
 
+period-hist: run-period-dist
+	cd $(PER_PATH)/hist; python make_hist.py 2> /dev/null
+
+# ref: http://mrbook.org/tutorials/make
 .cpp.o:
 	$(CC) $(CFLAGS) $< -o $@
 
@@ -52,4 +55,6 @@ clean:
 	$(PER_PATH)/*.o \
 	$(PER_PATH)/period-dist \
 	$(PER_PATH)/*.txt \
+	$(PER_PATH)/stat/*.txt \
+	$(PER_PATH)/hist/*.txt \
 	$(PER_PATH)/grab.log

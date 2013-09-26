@@ -1,10 +1,11 @@
 # ignore edited files
 *~
 \#*\#
-*.log
 
-# ignore txt output (an input files use .in)
+# ignore output files (an input files use .in)
 *.txt
+*.pdf
+*.log
 
 # ignore object files or exectutable code
 *.exe

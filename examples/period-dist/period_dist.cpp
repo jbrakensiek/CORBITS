@@ -3,6 +3,7 @@
 #include "stat_dist.h"
 #include "transit.h"
 #include <cstdio>
+#include <cstring>
 #include <cmath>
 #include <cstdlib>
 #include <vector>
@@ -17,7 +18,10 @@
 
 using namespace std;
 
-
+int analysis; // kind of analysis to be done
+// 0: all data (except outliers)
+// 1: data passing SNR and impact parameter cuts
+// 2: same as 1, but adjusted for geometric bias
 double bin[BINNUM];
 vector <cdf> CDF;
 vector <pdf> PDF;
@@ -26,9 +30,18 @@ double total = 0;
 double const r_margin = .10;
 int N = 0; // number of data points;
 // run once with nr = false, then again with nr = true
-double const nr = false;
+double const nr = false; // resonance analysis?
 kepler_input kepler_data[NDATA];
 int ndata; // number of KOIs
+
+// Clears the memory of all global variables modified while computing PDF / CDF
+void release() {
+  memset (bin, 0, sizeof (bin));
+  CDF.clear();
+  PDF.clear();
+  resonance.clear();
+  total = 0;
+}
 
 // checks that i is not part of KOI 284, 2248, or 351
 bool outlier_check (int i)
@@ -44,8 +57,10 @@ bool outlier_check (int i)
 bool ok(int i, int j)
 {
   if (!outlier_check (i) || !outlier_check (j)) return false;
+  if (analysis == 0) return true;
   bool b1 = kepler_data[i].SNR >= SNR_CUT && kepler_data[i].b <= B_CUT;
   bool b2 = kepler_data[j].SNR >= SNR_CUT && kepler_data[j].b <= B_CUT;
+  if (analysis == 1) return b1 && b2;
   double r = pow (kepler_data[i].Per / kepler_data[j].Per, -1.0 / 3);
   return b1 && b2 && kepler_data[i].SNR / r>= SNR_CUT && kepler_data[j].SNR  * r >= SNR_CUT;
 }
@@ -113,17 +128,6 @@ double prob_with_rayleigh (double h1, double h2)
         
       // get prob
       total_prob += prob_of_transits_approx (2, p);
-        
-      // debug
-      /* if (test)
-	 {
-	 if (i % 1000 == 0)
-	 {
-	 printf("%f %f %f\n", rayleigh[i],
-	 prob_of_transits_approx (2, p),
-	 prob_of_transits_approx_monte_carlo (2, p, 1000));
-	 }
-	 } */
     }
   return total_prob / TRIALS;
 }
@@ -146,10 +150,16 @@ void place_bin(int i, int j)
   // verify not too close to a resonance
   // if (nr && !check_ratio (r)) return; 
     
-  // pass to CORBITS
-  double h1 =  B_CUT * kepler_data[i].solRad / kepler_data[i].a * SRtoAU;
-  double h2 =  B_CUT * kepler_data[j].solRad / kepler_data[j].a * SRtoAU;
-  double prob = prob_with_rayleigh (h1, h2);
+  // pass to CORBITS if analysis == 2
+  double prob;
+  if (analysis == 2) {
+    double h1 =  B_CUT * kepler_data[i].solRad / kepler_data[i].a * SRtoAU;
+    double h2 =  B_CUT * kepler_data[j].solRad / kepler_data[j].a * SRtoAU;
+    prob = prob_with_rayleigh (h1, h2);
+  }
+  else {
+    prob = 1;
+  }
   this_prob.P = 1 / prob;
     
   // update PDF
@@ -182,7 +192,7 @@ void place_bin(int i, int j)
         }
     }
   total += 1 / prob;
-  fprintf(stderr, "%f %f\n", r, 1 / prob);
+  // fprintf(stderr, "%f %f\n", r, 1 / prob);
 }
 
 void make_cdf()
@@ -234,36 +244,64 @@ void set_up()
 
 void print_results()
 {
-  FILE *fout_dist = fopen(nr?"adj_dist_nr2.txt":"adj_dist2.txt", "w");
-  FILE *fout_hist = fopen(nr?"histogram_nr2.txt":"histogram2.txt", "w");
-  FILE *fout_cdf  = fopen(nr?"CDF_period_nr2.txt":"CDF_period2.txt", "w");
-  FILE *fout_py   = fopen("hist_py2.txt", "w");
-  FILE *fout_R    = fopen("p_dist2.txt", "w");
+  FILE *fout_dist, *fout_hist, *fout_cdf, *fout_py, *fout_R;
+  if (analysis == 0) {
+    fout_dist = fopen(nr?"all_dist_nr.txt":"all_dist.txt", "w");
+    fout_hist = fopen(nr?"all_hist_nr.txt":"all_hist.txt", "w");
+    fout_cdf  = fopen(nr?"all_CDF_nr.txt":"all_CDF.txt", "w");
+    fout_py   = fopen("hist/all_hist_py.txt", "w");
+    fout_R    = fopen("stat/all_hist_r.txt", "w");
+  }
+  else if (analysis == 1) {
+    fout_dist = fopen(nr?"snr_dist_nr.txt":"snr_dist.txt", "w");
+    fout_hist = fopen(nr?"snr_hist_nr.txt":"snr_hist.txt", "w");
+    fout_cdf  = fopen(nr?"snr_CDF_nr.txt":"snr_CDF.txt", "w");
+    fout_py   = fopen("hist/snr_hist_py.txt", "w");
+    fout_R    = fopen("stat/snr_hist_r.txt", "w");
+  }
+  else {
+    fout_dist = fopen(nr?"adj_dist_nr.txt":"adj_dist.txt", "w");
+    fout_hist = fopen(nr?"adj_hist_nr.txt":"adj_hist.txt", "w");
+    fout_cdf  = fopen(nr?"adj_CDF_nr.txt":"adj_CDF.txt", "w");
+    fout_py   = fopen("hist/adj_hist_py.txt", "w");
+    fout_R    = fopen("stat/adj_hist_r.txt", "w");
+  }
+  // PDF of period distribution
   for (int i = 0; i < (int) PDF.size(); i++)
     {
       fprintf(fout_dist, "%.5f\n", PDF[i].x); 
     }
+
+  // histogram bins of period distribution
   for (int i = BINWIDTH; i < BINNUM; i++)
     {
       fprintf(fout_hist, "%5.2f\t%.6f\n", 1.0 * i / BINWIDTH, bin[i] / total);
     }
-  fprintf (fout_py, "[");
+
+  // to be read in python
   for (int i = 0; i < (int) PDF.size(); i++)
     {
-      fprintf (fout_py, "%5.2f, ", exp(PDF[i].x));
+      if (i != 0) fprintf (fout_py, " ");
+      fprintf (fout_py, "%.2f", exp(PDF[i].x));
     }
-  fprintf (fout_py, "]\n[");
+  fprintf (fout_py, "\n");
   for (int i = 0; i < (int) PDF.size(); i++)
     {
-      fprintf (fout_py, "%.6f, ", PDF[i].P / total);
-    }    
-  fprintf (fout_py, "]\n");
+      if (i != 0) fprintf (fout_py, " ");
+      fprintf (fout_py, "%.6f", PDF[i].P / total);
+    }
+  fprintf (fout_py, "\n");
+  
+  // CDF of period distribution
   fprintf(fout_cdf, "%d\n", N);
   for (int i = 0; i < (int) CDF.size(); i++)
     {
       fprintf(fout_cdf, "%.7f\t%.7f\n", CDF[i].x, CDF[i].F);
     }
-  fprintf (stderr, "%d\n", PDF.size());
+
+  fprintf (stderr, "Number of pairs of KOIs: %d\n", PDF.size());
+  
+  // Output for use in R
   for (int i = 0; i < (int) PDF.size(); i++)
     {
       for (int j = 0; j < (int) 1000 * PDF[i].P / total; j++)
@@ -275,12 +313,25 @@ void print_results()
 
 int main()
 {
+  // Read KOI data from file
   ndata = input_data("koi-data-edit.txt", kepler_data);
-  fprintf(stderr, "Read data\n");
-  set_up();
-  fprintf(stderr, "Setup bins\n");
-  make_cdf();
-  fprintf(stderr, "CDF made\n");
-  print_results();
-  fprintf(stderr, "Done\n");
+  fprintf(stderr, "Read data\n\n");
+
+  for (analysis = 0; analysis <= 2; analysis++) {
+    fprintf(stderr, "Start of analysis %d\n", analysis);
+    // Initialize histogram and create the CDF
+    set_up();
+    fprintf(stderr, "PDF made\n");
+  
+    // Create the CDF
+    make_cdf();
+    fprintf(stderr, "CDF made\n");
+
+    // Output
+    print_results();
+    fprintf(stderr, "Output completed for %d\n\n", analysis);
+  
+    // Release global variables
+    release();
+  }
 }
