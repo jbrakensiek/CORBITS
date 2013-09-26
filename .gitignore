@@ -4,8 +4,9 @@
 
 # ignore output files (an input files use .in)
 *.txt
-*.pdf
 *.log
+*.csv
+*.pdf
 
 # ignore object files or exectutable code
 *.exe

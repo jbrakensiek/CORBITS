@@ -3,7 +3,7 @@ CC = g++
 CFLAGS = -c -Wall -O2 -I $(LIB_PATH)
 LDFLAGS = -Wall -O2 -I $(LIB_PATH)
 
-EXAMPLES = kepler-11 period-dist
+EXAMPLES = kepler-11 period-dist solar-system
 
 LIB_PATH = lib
 LIB = 	$(LIB_PATH)/math_misc.cpp \
@@ -21,6 +21,10 @@ PER_SRC = $(PER_PATH)/koi_input.cpp \
 	$(PER_PATH)/period_dist.cpp
 PER_OBJ = $(PER_SRC:.cpp=.o)
 
+SOLSYS_PATH = examples/solar-system
+SOLSYS_SRC = $(SOLSYS_PATH)/solsys.cpp
+SOLSYS_OBJ = $(SOLSYS_SRC:.cpp=.o)
+
 # targets
 
 all: lib examples
@@ -32,17 +36,23 @@ examples: $(EXAMPLES)
 kepler-11: lib $(KEP11_OBJ)
 	$(CC) $(LDFLAGS) $(LIB_OBJ) $(KEP11_OBJ) -o $(KEP11_PATH)/$@
 
-run-kepler-11: lib kepler-11
+run-kepler-11: kepler-11
 	cd $(KEP11_PATH); ./kepler-11
 
 period-dist: lib $(PER_OBJ)
 	$(CC) $(LDFLAGS) $(LIB_OBJ) $(PER_OBJ) -o $(PER_PATH)/$@
 
-run-period-dist: lib period-dist
+run-period-dist: period-dist
 	cd $(PER_PATH); ./grab.sh; ./period-dist
 
 period-hist: run-period-dist
 	cd $(PER_PATH)/hist; python make_hist.py 2> /dev/null
+
+solar-system: lib $(SOLSYS_OBJ)
+	$(CC) $(LDFLAGS) $(LIB_OBJ) $(SOLSYS_OBJ) -o $(SOLSYS_PATH)/$@
+
+run-solar-system: solar-system
+	cd $(SOLSYS_PATH); ./solar-system 2> /dev/null
 
 # ref: http://mrbook.org/tutorials/make
 .cpp.o:
@@ -57,4 +67,7 @@ clean:
 	$(PER_PATH)/*.txt \
 	$(PER_PATH)/stat/*.txt \
 	$(PER_PATH)/hist/*.txt \
-	$(PER_PATH)/grab.log
+	$(PER_PATH)/grab.log \
+	$(SOLSYS_PATH)/*.o \
+	$(SOLSYS_PATH)/solar-system \
+	$(SOLSYS_PATH)/*.csv
