@@ -15,7 +15,7 @@ You can build the CORBITS library and usage examples by typing `make`.  To only 
 Examples
 --------
 
-There are currently two usage examples for CORBITS.
+There are currently three usage examples for CORBITS.
 
 * kepler-11: Reproduces the data making the golden curve in Figure 4 of Lissauer, et. al., 2011.  See [here](http://arxiv.org/abs/1102.0291).
 * period-dist: Produces a period-ratio distribution of the Kepler Candidates (KOIs) which is geometrically debiased.  It utilizes the most recent data from the NASA Exoplanet Archive.  Summary histograms using matplotlib can be made with `make period-hist`.
