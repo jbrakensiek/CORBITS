@@ -42,13 +42,12 @@ run-kepler-11: kepler-11
 period-dist: lib $(PER_OBJ)
 	$(CC) $(LDFLAGS) $(LIB_OBJ) $(PER_OBJ) -o $(PER_PATH)/$@
 
-$(PER_PATH)/koi-data-edit.txt:
-	cd $(PER_PATH); ./grab.sh
-
 run-period-dist: period-dist $(PER_PATH)/koi-data-edit.txt
 	cd $(PER_PATH); ./period-dist
 
-period-hist: run-period-dist
+period-hist: $(PER_PATH)/hist/adj_hist_py.txt \
+	$(PER_PATH)/hist/all_hist_py.txt \
+	$(PER_PATH)/hist/snr_hist_py.txt
 	cd $(PER_PATH)/hist; python make_hist.py 2> /dev/null
 
 solar-system: lib $(SOLSYS_OBJ)
@@ -79,3 +78,14 @@ clean-all: clean
 	$(PER_PATH)/hist/*.pdf \
 	$(PER_PATH)/*.log \
 	$(SOLSYS_PATH)/*.csv
+
+# files
+
+$(PER_PATH)/koi-data-edit.txt:
+	cd $(PER_PATH); ./grab.sh
+
+$(PER_PATH)/hist/adj_hist_py.txt: run-period-dist
+
+$(PER_PATH)/hist/all_hist_py.txt: run-period-dist
+
+$(PER_PATH)/hist/snr_hist_py.txt: run-period-dist
