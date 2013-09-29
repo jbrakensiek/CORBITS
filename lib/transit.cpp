@@ -72,6 +72,46 @@ planet_ellipse convert(orbit o, double adj)
     return p;
 }
 
+planet_ellipse convert_upper_bound(orbit o) {
+    planet_ellipse p;
+    p.use = o.use;
+    
+    if (p.use == 1) {
+	/* Equation (9) of (Winn, 2010) */
+	p.h = (o.r_star / o.a) / (1 - o.e);
+    }
+    else {
+	/* Equation (10) of (Winn, 2010) */
+	p.h = (o.r_star / o.a) / (1 + o.e);
+    }
+
+    p.pole[0] = o.pole;
+    p.pole[1].x = -o.pole.x;
+    p.pole[1].y = -o.pole.y;
+    p.pole[1].z = -o.pole.z;
+    return p;
+}
+
+planet_ellipse convert_lower_bound(orbit o) {
+    planet_ellipse p;
+    p.use = o.use;
+
+    if (p.use == 1) {
+	/* Equation (10) of (Winn, 2010) */
+	p.h = (o.r_star / o.a) / (1 + o.e);
+    }
+    else {
+	/* Equation (9) of (Winn, 2010) */
+	p.h = (o.r_star / o.a) / (1 - o.e);
+    }
+
+    p.pole[0] = o.pole;
+    p.pole[1].x = -o.pole.x;
+    p.pole[1].y = -o.pole.y;
+    p.pole[1].z = -o.pole.z;
+
+    return p;
+}
 
 int in_hull(point3D point, int n, planet_ellipse p[])
 {
@@ -485,12 +525,21 @@ double prob_of_transits_approx_monte_carlo(int n, planet_ellipse p[], int n_tria
 /* no error bars currently */
 sci_value prob_of_transits_input_orbit(int n, input_orbit io[]) {
     planet_ellipse p[n];
+    double prob, prob_up, prob_lo;
     int i = 0;
     for (; i < n; i++) {
 	p[i] = convert(input_orbit_to_orbit(io[i]));
     }
-    double prob = prob_of_transits_approx(n, p);
-    return sci_value(prob, NAN, NAN);
+    prob = prob_of_transits_approx(n, p);
+    for (i = 0; i < n; i++) {
+	p[i] = convert_upper_bound(input_orbit_to_orbit(io[i]));
+    }
+    prob_up = prob_of_transits_approx(n, p);
+    for (i = 0; i < n; i++) {
+	p[i] = convert_lower_bound(input_orbit_to_orbit(io[i]));
+    }
+    prob_lo = prob_of_transits_approx(n, p);
+    return sci_value(prob, prob_up - prob, prob - prob_lo);
 }
 
 double prob_of_transits_monte_carlo(int n, orbit o[], int n_trials)

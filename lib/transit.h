@@ -54,8 +54,14 @@ typedef struct {
 /* returns the characteristic number of the system */
 double chi_planets(double h1, double h2, double phi);
 
-/* converts an elliptical orbit into a planet_ellipse data type */
+/* converts an elliptical orbit into an approximate planet_ellipse data type */
 planet_ellipse convert(orbit o);
+
+/* worst-case upper bound */
+planet_ellipse convert_upper_bound(orbit o);
+
+/* worst-case lower bound */
+planet_ellipse convert_lower_bound(orbit o);
 
 /* is a point3D in the region formed by multiple planets? */
 int in_hull(point3D point, int n, planet_ellipse p[]);
@@ -72,12 +78,6 @@ int in_transit_exact(point3D point, orbit o);
 
 /* Converts an input_orbit to an orbit which serves as an approximation */
 orbit input_orbit_to_orbit(input_orbit io);
-
-/* Converts an input_orbit to an orbit which serves as a lower bound */
-orbit input_orbit_to_lower_bound_orbit(input_orbit io);
-
-/* Converts an input_orbit to an orbit which serves as an upper bound */
-orbit input_orbit_to_upper_bound_orbit(input_orbit io);
 
 /* intersection of two small circles */
 crossing intersection(point3D pole1, double h1, point3D pole2, double h2);

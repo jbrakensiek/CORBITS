@@ -78,25 +78,29 @@ void simulate(FILE *fout) {
     for (int i = 0; i < NDATA; i++) {
 	fprintf (fout, "%s,", data[i].name);
     }
-    fprintf (fout, "Probability\n");
+    fprintf (fout, "Probability,PosErr,NegErr\n");
 
     // body
     for (int i = 0; i < pow(3, NDATA) - 1; i++) {
 	int a = i;
 	planet_ellipse Q[NDATA];
+	input_orbit Q_IO[NDATA];
 	int k = 0;
 	for (int j = 0; j < NDATA; j++) {
 	    P[j].use = a % 3;
+	    IO[j].use = a % 3;
 	    a /= 3;
 	    if(P[j].use != 2) {
+		Q_IO[k] = IO[j];
 		Q[k++] = P[j];
 	    }
 	}
 	double prob = prob_of_transits_approx(k, Q);
+	sci_value prob2 = prob_of_transits_input_orbit(k, Q_IO);
 	for (int j = 0; j < NDATA; j++) {
 	    fprintf(fout, "%d,", P[j].use);
 	}
-	fprintf(fout, "%e\n", prob);
+	fprintf(fout, "%e,%e,%e\n", prob2.val, prob2.pos_err, prob2.neg_err);
     }
 }
 
