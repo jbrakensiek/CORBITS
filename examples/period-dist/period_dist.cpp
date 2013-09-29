@@ -111,7 +111,7 @@ double prob_with_rayleigh (double h1, double h2)
     double total_prob = 0;
     for (int i = 0; i < TRIALS; i++)
     {
-	double theta = rand_Rayleigh (MMI * sqrt (2 / pi)) / rad_to_deg;
+	double theta = rand_Rayleigh (MMI * sqrt (2 / PI)) / RAD_TO_DEG;
         
 	// set up
 	planet_ellipse p[2];
@@ -152,8 +152,8 @@ void place_bin(int i, int j)
     // pass to CORBITS if analysis == 2
     double prob;
     if (analysis == 2) {
-	double h1 =  B_CUT * kepler_data[i].solRad / kepler_data[i].a * SRtoAU;
-	double h2 =  B_CUT * kepler_data[j].solRad / kepler_data[j].a * SRtoAU;
+	double h1 =  B_CUT * kepler_data[i].solRad / kepler_data[i].a * SR_TO_AU;
+	double h2 =  B_CUT * kepler_data[j].solRad / kepler_data[j].a * SR_TO_AU;
 	prob = prob_with_rayleigh (h1, h2);
     }
     else {

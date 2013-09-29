@@ -29,29 +29,7 @@ planet_ellipse convert(orbit o)
     /* Equation (9) and (10) of (Winn, 2010) */
     // h1  = (o.r_star / o.a) / (1 - o.e);
     h2  = (o.r_star / o.a) / (1 + o.e);
-    double phi = pi - (asin(h2) + acos(p.h));
-    
-    /* point3D a, b, c, d;
-    a.x =   o.pole.x * h1 + o.periapse.x * sqrt(1 - h1 * h1);
-    a.y =   o.pole.y * h1 + o.periapse.y * sqrt(1 - h1 * h1);
-    a.z =   o.pole.z * h1 + o.periapse.z * sqrt(1 - h1 * h1);
-    b.x =   o.pole.x * h2 - o.periapse.x * sqrt(1 - h2 * h2);
-    b.y =   o.pole.y * h2 - o.periapse.y * sqrt(1 - h2 * h2);
-    b.z =   o.pole.z * h2 - o.periapse.z * sqrt(1 - h2 * h2);
-    c.x = - o.pole.x * h1 + o.periapse.x * sqrt(1 - h1 * h1);
-    c.y = - o.pole.y * h1 + o.periapse.y * sqrt(1 - h1 * h1);
-    c.z = - o.pole.z * h1 + o.periapse.z * sqrt(1 - h1 * h1);
-    d.x = - o.pole.x * h2 - o.periapse.x * sqrt(1 - h2 * h2);
-    d.y = - o.pole.y * h2 - o.periapse.y * sqrt(1 - h2 * h2);
-    d.z = - o.pole.z * h2 - o.periapse.z * sqrt(1 - h2 * h2); 
-    
-    point3D m1, m2;
-    m1.x = a.x + b.x;
-    m1.y = a.y + b.y;
-    m1.z = a.z + b.z;
-    m2.x = c.x + d.x;
-    m2.y = c.y + d.y;
-    m2.z = c.z + d.z; */
+    double phi = PI - (asin(h2) + acos(p.h));
     
     point3D m1, m2;
     m1.x = o.pole.x * sin(phi) + o.periapse.x * cos(phi);
@@ -78,7 +56,7 @@ planet_ellipse convert(orbit o, double adj)
     /* Equation (9) and (10) of (Winn, 2010) */
     // h1  = (o.r_star / o.a) / (1 - o.e);
     h2  = (o.r_star / o.a) / (1 + o.e);
-    double phi = pi - (asin(h2) + acos(p.h));
+    double phi = PI - (asin(h2) + acos(p.h));
     
     point3D m1, m2;
     m1.x = o.pole.x * sin(phi) + o.periapse.x * cos(phi);
@@ -115,7 +93,7 @@ int in_hull_exact(point3D point, int n, orbit o[])
     for (i = 0; i < n; i++)
     {
         int flag = !in_transit_exact(point, o[i]);
-        if (flag)
+	if (flag)
         {
             return 0;
         }
@@ -131,7 +109,7 @@ int in_transit(point3D point, planet_ellipse p)
     {
         return 1;
     }
-    int flag = (dot1 <= p.h + eps) && (dot2 <= p.h + eps);
+    int flag = (dot1 <= p.h + EPS) && (dot2 <= p.h + EPS);
     return !(p.use ^ flag);
 }
 
@@ -141,7 +119,7 @@ int in_transit_exact(point3D point, orbit o)
     double dot = dot_product(proj, o.periapse);
     /* equation (9) of (Winn, 2010) */
     double h = o.r_star / o.a * (1 + o.e * dot) / (1 - o.e * o.e);
-    int flag = abs_double(dot_product(point, o.pole)) < h + eps;
+    int flag = abs_double(dot_product(point, o.pole)) < h + EPS;
     return !(o.use ^ flag);
 }
 
@@ -333,7 +311,7 @@ double prob_of_transits_approx(int n, planet_ellipse p[])
             {
                 point3D a = point3D_from_angle(p[i], 0, j);
                 int flag = in_hull(a, n, p);
-                geodesic_curvature += (2 * p[i].use - 1) * p[i].h * 2 * pi
+                geodesic_curvature += (2 * p[i].use - 1) * p[i].h * 2 * PI
                     * (flag);
                 /* euler_chi += 2*flag; */
             }
@@ -343,7 +321,7 @@ double prob_of_transits_approx(int n, planet_ellipse p[])
     /*We can stop now if there are no intersection points*/
     if (size_hull == 0) 
     {
-        double prob = geodesic_curvature / 4 / pi;
+        double prob = geodesic_curvature / 4 / PI;
         /* floor(): <http://en.wikipedia.org/wiki/C_mathematical_functions> */
         double ans = prob;
         ans = ans - floor(ans);
@@ -437,7 +415,7 @@ double prob_of_transits_approx(int n, planet_ellipse p[])
                     }
                     pa[list[j][k]] = pa[pa[list[j][k1]]]; */
                     geodesic_curvature += (2 * p[i].use - 1) *
-                        (angle[j][(k + 1) % len[j]] + 2 * pi *
+                        (angle[j][(k + 1) % len[j]] + 2 * PI *
                         (k + 1 == len[j]) - angle[j][k]) * p[i].h;
                 }
             }
@@ -471,7 +449,7 @@ double prob_of_transits_approx(int n, planet_ellipse p[])
                 p[hull[i].pole[1]].pole[hull[i].index[1]]));
     }
 
-    double prob = (geodesic_curvature - turning_angles) / 4 / pi;
+    double prob = (geodesic_curvature - turning_angles) / 4 / PI;
     prob += euler_chi / 2.0;
     /* if (equal(0, prob)) return 0; */
     /* floor(): <http://en.wikipedia.org/wiki/C_mathematical_functions> */

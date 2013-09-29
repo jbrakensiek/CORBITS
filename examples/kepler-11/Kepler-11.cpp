@@ -33,7 +33,7 @@ void read_input()
         P11[i] = atof (s);
         IO11[i].a      = radius (M11, P11[i]);
         // fprintf (stderr, "%d %f\n", i + 1, IO11[i].a);
-        IO11[i].r_star = R11 * SRtoAU;
+        IO11[i].r_star = R11 * SR_TO_AU;
         IO11[i].r      = 0;
         IO11[i].e      = 0;
         IO11[i].omega  = 0;
@@ -50,8 +50,8 @@ double prob(double sigma_i)
         {
             for (int j = 0; j < n_planets; j++)
             {
-                IO11[j].i     = rand_Rayleigh (sigma_i) / rad_to_deg;
-                IO11[j].Omega = rand_uniform  (2 * pi); 
+                IO11[j].i     = rand_Rayleigh (sigma_i) / RAD_TO_DEG;
+                IO11[j].Omega = rand_uniform  (2 * PI); 
                 O11[j]        = input_orbit_to_orbit (IO11[j]);
                 O11[j].use    = (int) (k != j);
                 planets11[j]  = convert (O11[j]);
@@ -67,7 +67,7 @@ void print_results ()
 {
     for (double i = 0; i <= 6; i += .1)
     {
-        double curp = prob(i * sqrt (2 / pi));
+        double curp = prob(i * sqrt (2 / PI));
         printf ("%3.1f\t%.10lf\n", i, curp);
     }
 }

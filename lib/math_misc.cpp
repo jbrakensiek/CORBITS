@@ -13,7 +13,7 @@ double abs_double(double x)
 
 int equal(double a, double b)
 {
-    if (a < b + eps && b < a + eps)
+    if (a < b + EPS && b < a + EPS)
     {
         return 1;
     }
@@ -31,7 +31,7 @@ double min(double a, double b)
 
 double radius(double M_star, double P) 
 {
-       return pow((P / days_in_year) * (P  / days_in_year) * M_star, 1.0 / 3.0);
+       return pow((P / DAYS_IN_YEAR) * (P  / DAYS_IN_YEAR) * M_star, 1.0 / 3.0);
 }
 
 double mass_from_radius (double R_star)

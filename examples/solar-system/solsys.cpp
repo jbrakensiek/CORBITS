@@ -53,11 +53,11 @@ void simulate(FILE *fout) {
     input_orbit IO[NDATA];
     for (int i = 0; i < NDATA; i++) {
 	IO[i].a = data[i].a;
-	IO[i].r_star = 1 * SRtoAU;
+	IO[i].r_star = 1 * SR_TO_AU;
 	IO[i].e = data[i].e;
-	IO[i].Omega = data[i].Omega / rad_to_deg;
-	IO[i].omega = data[i].omega / rad_to_deg;
-	IO[i].i = data[i].i / rad_to_deg;
+	IO[i].Omega = data[i].Omega / RAD_TO_DEG;
+	IO[i].omega = data[i].omega / RAD_TO_DEG;
+	IO[i].i = data[i].i / RAD_TO_DEG;
     }
     
     // convert orbital parameters into format useable by CORBITS

@@ -3,25 +3,33 @@
 
 /* miscelaneous mathematical and astronomical functions and constants */
 
+/* --- STRUCTS --- */
+
+struct sci_value {
+  double val;
+  double pos_err;
+  double neg_err;
+};
+
 /* --- CONSTANTS --- */
 
-double const pi = 3.14159265358979;
+double const PI = 3.14159265358979;
 
-double const rad_to_deg = 180 / pi;
+double const RAD_TO_DEG = 180 / PI;
 
-double const eps = 2e-9; /* margin of error in floating-point calculations */
+double const EPS = 2e-9; /* margin of error in floating-point calculations */
 
-double const SRtoAU = .0046491; /* http://en.wikipedia.org/wiki/Solar_radius */
+double const SR_TO_AU = .0046491; /* http://en.wikipedia.org/wiki/Solar_radius */
 
-double const days_in_year = 365.2425;
-
-/* wikipedia */
-double const SR_to_km = 696342;
+double const DAYS_IN_YEAR = 365.2425;
 
 /* wikipedia */
-double const JR_to_km = 69911;
+double const SR_TO_KM = 696342;
 
-double const solar_mass = 1.989e30; /* http://solarscience.msfc.nasa.gov/ */
+/* wikipedia */
+double const JR_TO_KM = 69911;
+
+double const SOLAR_MASS = 1.989e30; /* http://solarscience.msfc.nasa.gov/ */
 
 double const SM_to_EM = 332946; /* http://en.wikipedia.org/wiki/Solar_Mass */
 
