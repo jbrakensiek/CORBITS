@@ -28,6 +28,7 @@ typedef struct {
     double Omega;
     double omega;
     double i;
+    int use;
 } input_orbit;
 
 /* approximate boundary of ellipse transit region */
@@ -69,8 +70,14 @@ int in_transit(point3D point, planet_ellipse p);
 /* implementation based on Winn(2010) */
 int in_transit_exact(point3D point, orbit o);
 
-/* Converts an input_orbit to an orbit */
+/* Converts an input_orbit to an orbit which serves as an approximation */
 orbit input_orbit_to_orbit(input_orbit io);
+
+/* Converts an input_orbit to an orbit which serves as a lower bound */
+orbit input_orbit_to_lower_bound_orbit(input_orbit io);
+
+/* Converts an input_orbit to an orbit which serves as an upper bound */
+orbit input_orbit_to_upper_bound_orbit(input_orbit io);
 
 /* intersection of two small circles */
 crossing intersection(point3D pole1, double h1, point3D pole2, double h2);
@@ -82,11 +89,13 @@ crossing intersection_all(planet_ellipse a, planet_ellipse b);
 input_orbit orbit_to_input_orbit(orbit o);
 
 /* finds the prob of all n observations with an analytic approx algorithm */
-/* KNOWN PROBLEM: will given an answer < .5 if the answer should be > .5 */
 double prob_of_transits_approx(int n, planet_ellipse p[]);
 
 /* finds the probability of all n observations with an approx MC algorithm */
 double prob_of_transits_approx_monte_carlo(int n, planet_ellipse p[], int n_trials);
+
+/* Finds the prob of transit with error bars */
+sci_value prob_of_transits_input_orbit(int n, input_orbit io[]);
 
 /* finds the probability of all n observations with an MC algorithm */
 double prob_of_transits_monte_carlo(int n, orbit o[], int n_trials);

@@ -9,6 +9,11 @@ struct sci_value {
   double val;
   double pos_err;
   double neg_err;
+  sci_value (double _val, double _pos_err, double _neg_err) {
+    val = _val;
+    pos_err = _pos_err;
+    neg_err = _neg_err;
+  }
 };
 
 /* --- CONSTANTS --- */

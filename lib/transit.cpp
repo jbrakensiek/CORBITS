@@ -128,6 +128,7 @@ int in_transit_exact(point3D point, orbit o)
 orbit input_orbit_to_orbit(input_orbit io)
 {
     orbit o;
+    o.use = io.use;
     o.a = io.a;
     o.e = io.e;
     o.r = io.r;
@@ -479,6 +480,17 @@ double prob_of_transits_approx_monte_carlo(int n, planet_ellipse p[], int n_tria
         }
     }
     return 1.0 * n_good / n_trials;
+}
+
+/* no error bars currently */
+sci_value prob_of_transits_input_orbit(int n, input_orbit io[]) {
+    planet_ellipse p[n];
+    int i = 0;
+    for (; i < n; i++) {
+	p[i] = convert(input_orbit_to_orbit(io[i]));
+    }
+    double prob = prob_of_transits_approx(n, p);
+    return sci_value(prob, NAN, NAN);
 }
 
 double prob_of_transits_monte_carlo(int n, orbit o[], int n_trials)
