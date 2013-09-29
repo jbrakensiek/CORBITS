@@ -2,6 +2,10 @@
 *~
 \#*\#
 
+# ignore R workspaces
+.RData
+.Rhistory
+
 # ignore output files (an input files use .in)
 *.txt
 *.log
