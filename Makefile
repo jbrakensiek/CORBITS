@@ -3,13 +3,23 @@ CC = g++
 CFLAGS = -c -Wall -O2 -I $(LIB_PATH)
 LDFLAGS = -Wall -O2 -I $(LIB_PATH)
 
-EXAMPLES = kepler-11 period-dist solar-system
+# library
 
 LIB_PATH = lib
 LIB = 	$(LIB_PATH)/math_misc.cpp \
 	$(LIB_PATH)/point3D.cpp \
 	$(LIB_PATH)/transit.cpp
 LIB_OBJ = $(LIB:.cpp=.o)
+
+# base
+
+BASE_PATH = base
+BASE_SRC = $(BASE_PATH)/corbits.cpp
+BASE_OBJ = $(BASE_SRC:.cpp=.o)
+
+# examples
+
+EXAMPLES = kepler-11 period-dist solar-system
 
 KEP11_PATH = examples/kepler-11
 KEP11_SRC = $(KEP11_PATH)/Kepler-11.cpp
@@ -27,9 +37,12 @@ SOLSYS_OBJ = $(SOLSYS_SRC:.cpp=.o)
 
 # targets
 
-all: lib examples
+all: lib base examples
 
 lib: $(LIB_OBJ)
+
+base: lib $(BASE_OBJ)
+	$(CC) $(LDFLAGS) $(LIB_OBJ) $(BASE_OBJ) -o $(BASE_PATH)/corbits
 
 examples: $(EXAMPLES)
 
@@ -63,6 +76,8 @@ run-solar-system: solar-system
 # remove object files and executables
 clean:
 	rm -f $(LIB_PATH)/*.o \
+	$(BASE)/*.o \
+	$(BASE)/corbits \
 	$(KEP11_PATH)/*.o \
 	$(KEP11_PATH)/kepler-11 \
 	$(PER_PATH)/*.o \
