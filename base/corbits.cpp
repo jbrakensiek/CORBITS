@@ -25,7 +25,7 @@ bool read(FILE* fin, int &len, input_orbit io[]) {
 }
 
 int main(int argc, char **argv) {
-  if (argc == 1) {
+  if (argc != 1) {
     fprintf (stderr, "Error: Too many arguments.\n");
     return 1;
   }
