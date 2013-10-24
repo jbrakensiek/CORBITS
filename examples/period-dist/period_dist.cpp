@@ -305,9 +305,9 @@ void print_results()
     // Output for use in R
     for (int i = 0; i < (int) PDF.size(); i++)
     {
-	for (int j = 0; j < (int) 1000 * PDF[i].P / total; j++)
+	for (int j = 0; j < (int) 10000 * PDF[i].P / total; j++)
         {
-	    fprintf (fout_R, "%15.10f\n", exp (PDF[i].x) * (RAND_MAX + .001 * rand()) / RAND_MAX);
+	    fprintf (fout_R, "%15.10f\n", exp (PDF[i].x));
         }
     }
 }
