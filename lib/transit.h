@@ -25,6 +25,7 @@ typedef struct {
     double r_star;
     double r;
     double e;
+    double P;
     double Omega;
     double omega;
     double i;

@@ -41,6 +41,8 @@ all: lib base examples
 
 lib: $(LIB_OBJ)
 
+corbits: base
+
 base: lib $(BASE_OBJ)
 	$(CC) $(LDFLAGS) $(LIB_OBJ) $(BASE_OBJ) -o $(BASE_PATH)/corbits
 
