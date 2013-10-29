@@ -8,7 +8,8 @@ LDFLAGS = -Wall -O2 -I $(LIB_PATH)
 LIB_PATH = lib
 LIB = 	$(LIB_PATH)/math_misc.cpp \
 	$(LIB_PATH)/point3D.cpp \
-	$(LIB_PATH)/transit.cpp
+	$(LIB_PATH)/transit.cpp \
+	$(LIB_PATH)/occultations.cpp
 LIB_OBJ = $(LIB:.cpp=.o)
 
 # base
