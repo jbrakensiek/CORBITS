@@ -3,12 +3,24 @@
 /* --- STRUCTS --- */
 
 /* 3D point data type */
-typedef struct{
+struct point3D {
     double x;
     double y;
     double z;
-} point3D;
+    point3D() {
+      x = 0;
+      y = 0;
+      z = 0;
+    }
+    point3D(double _x, double _y, double _z) {
+      x = _x;
+      y = _y;
+      z = _z;
+    }
+};
 
+/* --- OPERATORS --- */
+point3D operator-(point3D p);
 
 /* --- FUNCTION PROTOTYPES --- */
 
@@ -18,6 +30,9 @@ point3D cross_product(point3D a, point3D b);
 
 /* dot product of two point3Ds */
 double dot_product(point3D a, point3D b);
+
+/* the square of the distance between two point3Ds */
+double distance_squared(point3D a, point3D b);
 
 /* makes a new point3D */
 point3D new_point3D(double x, double y, double z);
@@ -34,8 +49,14 @@ point3D orthogonal_vector(point3D pole);
 /* Returns the radian angle between two point3Ds in the range [-pi, pi] */
 double point3D_angle(point3D a, point3D b);
 
+/* debugging function */
+void print_point3D(point3D p);
+
 /* projection of a into plane of pole, assume pole is a unit */
 point3D projection(point3D a, point3D pole);
+
+/* normalized projection of w into span(u, v) */
+point3D projection_span(point3D u, point3D v, point3D w);
 
 /* constructs a random point on the surface of a unit sphere. */
 /* Algorithm based on <http://en.wikipedia.org/wiki/N-sphere> */
