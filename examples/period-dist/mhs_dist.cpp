@@ -229,7 +229,7 @@ void print_results()
   // to be read in python
   for (int i = 0; i < (int) PDF.size(); i++) {
     if (i != 0) fprintf (fout_py, " ");
-    fprintf (fout_py, "%.2f", exp(PDF[i].x));
+    fprintf (fout_py, "%.2f", PDF[i].x);
   }
   fprintf (fout_py, "\n");
   for (int i = 0; i < (int) PDF.size(); i++) {
