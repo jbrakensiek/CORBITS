@@ -20,7 +20,7 @@ BASE_OBJ = $(BASE_SRC:.cpp=.o)
 
 # examples
 
-EXAMPLES = kepler-11 period-dist solar-system
+EXAMPLES = kepler-11 period-dist mhs-dist solar-system
 
 KEP11_PATH = examples/kepler-11
 KEP11_SRC = $(KEP11_PATH)/Kepler-11.cpp
@@ -31,6 +31,12 @@ PER_SRC = $(PER_PATH)/koi_input.cpp \
 	$(PER_PATH)/stat_dist.cpp \
 	$(PER_PATH)/period_dist.cpp
 PER_OBJ = $(PER_SRC:.cpp=.o)
+
+MHS_PATH = examples/period-dist
+MHS_SRC = $(MHS_PATH)/koi_input.cpp \
+	$(MHS_PATH)/stat_dist.cpp \
+	$(MHS_PATH)/mhs_dist.cpp
+MHS_OBJ = $(MHS_SRC:.cpp=.o)
 
 SOLSYS_PATH = examples/solar-system
 SOLSYS_SRC = $(SOLSYS_PATH)/solsys.cpp
@@ -49,22 +55,36 @@ base: lib $(BASE_OBJ)
 
 examples: $(EXAMPLES)
 
+# Kepler-11
+
 kepler-11: lib $(KEP11_OBJ)
 	$(CC) $(LDFLAGS) $(LIB_OBJ) $(KEP11_OBJ) -o $(KEP11_PATH)/$@
 
 run-kepler-11: kepler-11
 	cd $(KEP11_PATH); ./kepler-11
 
+# Period ratio distribution
+
 period-dist: lib $(PER_OBJ)
 	$(CC) $(LDFLAGS) $(LIB_OBJ) $(PER_OBJ) -o $(PER_PATH)/$@
 
 run-period-dist: period-dist $(PER_PATH)/koi-data-edit.txt
-	cd $(PER_PATH); ./period-dist
+	cd $(MHS_PATH); ./mhs-dist
 
 period-hist: $(PER_PATH)/hist/adj_hist_py.txt \
 	$(PER_PATH)/hist/all_hist_py.txt \
 	$(PER_PATH)/hist/snr_hist_py.txt
 	cd $(PER_PATH)/hist; python make_hist.py 2> /dev/null
+
+# MHS distribution
+
+mhs-dist: lib $(MHS_OBJ)
+	$(CC) $(LDFLAGS) $(LIB_OBJ) $(MHS_OBJ) -o $(MHS_PATH)/$@
+
+run-mhs-dist: mhs-dist $(MHS_PATH)/koi-data-edit.txt
+	cd $(PER_PATH); ./period-dist
+
+# Solar System
 
 solar-system: lib $(SOLSYS_OBJ)
 	$(CC) $(LDFLAGS) $(LIB_OBJ) $(SOLSYS_OBJ) -o $(SOLSYS_PATH)/$@
