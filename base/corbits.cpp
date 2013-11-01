@@ -5,8 +5,9 @@
 #include <getopt.h>
 
 bool report_error = false;
+bool compute_all = false;
 const char* DEFAULT_FORMAT = "nPeioOu";
-const char* short_options = "ef:o:";
+const char* short_options = "ef:o:A";
 
 static struct option long_options[] = {
   {"help", no_argument, 0, 0}
@@ -111,7 +112,7 @@ int main(int argc, char **argv) {
     case 0:
       // fprintf (stderr, "Option: %s\n", long_options[option_index].name);
       if (option_index == 0) {
-	printf ("Usage: %s [--help] [-e] -f FORMAT [FILENAME]\n\n", argv[0]);
+	printf ("Usage: %s [--help] [-e] [-f FORMAT] < FILENAME\n\n", argv[0]);
         printf ("Compute the geometric probability of observing\n");
 	printf ("the transit of all exoplanets specified in FILENAME\n");
 	printf ("from the perspective of a random observer.\n\n");
@@ -119,6 +120,7 @@ int main(int argc, char **argv) {
 	printf ("  --help       prints help information then exits\n");
 	printf ("  -f FORMAT    specifies format of input (see below)\n");
 	printf ("  -e           include worst-case error bounds in output\n");
+	printf ("  -A           compute probabilities for all possible observations\n");
 	printf ("\n");
 	printf ("The input, read from stdin or FILENAME, should be a tab-delimited\n");
 	printf("table, each row of which specific an individual planet.  The orbital\n");
@@ -135,7 +137,7 @@ int main(int argc, char **argv) {
 	printf ("  P            the period of the orbit in days (default: 365.25)\n");
 	printf ("  r            the radius of the planet in earth radii (default: 0)\n");
 	printf ("  R            the radius of the star in stellar radii (default: 1)\n");
-	printf ("  u            0 explicitly includes the planet, 1 explicitly excludes the  \n               planet from the probability (default: 0)\n");
+	printf ("  u            0 explicitly includes the planet, 1 explicitly excludes the  \n               planet from the observation (default: 0)\n");
         printf ("\n");
 	printf ("CORBITS will have an exit status of  0 if successful. If there are\nerrors in the reading of the table, an exit status of 1 will be returned.\nAny other errors will return an exit status of 2.\n");
 	printf ("\n");
@@ -158,6 +160,9 @@ int main(int argc, char **argv) {
     case 'o':
       fout = fopen (optarg, "r");
       break;
+    case 'A':
+      compute_all = true;
+      break;
     case '?':
       break;
     default:
@@ -168,18 +173,37 @@ int main(int argc, char **argv) {
   fprintf (stderr, "optind: %d\n", optind);
   int len = 0;
   input_orbit io[MAX];
-  memset (io, 0, sizeof (io));
+  for (int i = 0; i < n; i++) {
+    
+  }
 
   if (!read(fin, len, format, io)) {
     return 2;
   }
   
-  sci_value prob = prob_of_transits_input_orbit(len, io);
+  if (!compute_all) {
+    sci_value prob = prob_of_transits_input_orbit(len, io);
   
-  fprintf (fout, "Probability: %e\n", prob.val);
-  if (report_error) {
-    fprintf (fout, "Positive Error: %e\n", prob.pos_err);
-    fprintf (fout, "Negative Error: %e\n", prob.neg_err);
+    fprintf (fout, "Probability: %e\n", prob.val);
+    if (report_error) {
+      fprintf (fout, "Positive Error: %e\n", prob.pos_err);
+      fprintf (fout, "Negative Error: %e\n", prob.neg_err);
+    }
+  }
+  else {
+    for (int i = 0; i < (1 << len); i++) {
+      for (int j = 0; j < len; j++) {
+	io[j].use = ((1 << j) & (1 << i)) > 0;
+	sci_value prob = prob_of_transits_input_orbit(len, io);
+
+	fprintf (fout, "%s", use_string);
+	fprintf (fout, "Probability: %e\n", prob.val);
+	if (report_error) {
+	  fprintf (fout, "Positive Error: %e\n", prob.pos_err);
+	  fprintf (fout, "Negative Error: %e\n", prob.neg_err);
+	}
+      }
+    }
   }
   return 0;
 }
