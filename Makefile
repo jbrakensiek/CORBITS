@@ -69,7 +69,7 @@ period-dist: lib $(PER_OBJ)
 	$(CC) $(LDFLAGS) $(LIB_OBJ) $(PER_OBJ) -o $(PER_PATH)/$@
 
 run-period-dist: period-dist $(PER_PATH)/koi-data-edit.txt
-	cd $(MHS_PATH); ./mhs-dist
+	cd $(MHS_PATH); ./period-dist
 
 period-hist: $(PER_PATH)/hist/adj_hist_py.txt \
 	$(PER_PATH)/hist/all_hist_py.txt \
@@ -82,7 +82,7 @@ mhs-dist: lib $(MHS_OBJ)
 	$(CC) $(LDFLAGS) $(LIB_OBJ) $(MHS_OBJ) -o $(MHS_PATH)/$@
 
 run-mhs-dist: mhs-dist $(MHS_PATH)/koi-data-edit.txt
-	cd $(PER_PATH); ./period-dist
+	cd $(PER_PATH); ./mhs-dist
 
 # Solar System
 

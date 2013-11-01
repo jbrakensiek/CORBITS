@@ -87,7 +87,7 @@ double delta (int i, int j) {
   double r2 = kepler_data[j].Rad;
   double m1 = pow (r1, 2.06);
   double m2 = pow (r2, 2.06);
-  printf ("radii: %f %f\n", r1, r2);
+  // fprintf (stderr, "radii: %f %f\n", r1, r2);
   double M_star = kepler_data[i].solRad * SM_to_EM;
   return (a1 - a2) / ((a1 + a2) / 2) * pow ((m1 + m2) / (3 * M_star), -1.0 / 3);
 }
@@ -150,7 +150,11 @@ void place_bin(int i, int j) {
   if (conv >= BINNUM) return; // too large    
   bin[conv] += 1 / prob;
   total += 1 / prob;
-  printf("%f %f\n", r, 1 / prob);
+  // fprintf(stderr, "%f %f %f\n", r, 1 / prob , kepler_data[i].KOI);
+  // fprintf (stderr, "%d %d\n", nan[0], nan[1]);
+  /* if () {
+    fprintf (stderr, "FAIL: %d %f\n", i, kepler_data[i].KOI);
+    } */
 }
 
 void make_cdf()
@@ -178,8 +182,8 @@ void set_up() {
   }
     
   // make histogram
-  for (int i = 0; i < NDATA; i++) {
-    for (int j = i + 1; j < NDATA; j++) {
+  for (int i = 0; i < ndata; i++) {
+    for (int j = i + 1; j < ndata; j++) {
       if (!ok(i, j)) continue;
       if (same_system(i, j) && j == i + 1) {
 	place_bin(i, j);         
@@ -244,9 +248,7 @@ void print_results()
   
   // Output for use in R
   for (int i = 0; i < (int) PDF.size(); i++) {
-    for (int j = 0; j < (int) 10000 * PDF[i].P / total; j++) {
-      fprintf (fout_R, "%15.10f\n", exp (PDF[i].x));
-    }
+    fprintf (fout_R, "%15.10f %.10f\n", PDF[i].x, PDF[i].P);
   }
 }
 
