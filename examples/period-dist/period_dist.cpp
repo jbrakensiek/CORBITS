@@ -303,11 +303,9 @@ void print_results()
     fprintf (stderr, "Number of pairs of KOIs: %d\n", PDF.size());
   
     // Output for use in R
-    for (int i = 0; i < (int) PDF.size(); i++)
-    {
-	for (int j = 0; j < (int) 10000 * PDF[i].P / total; j++)
-        {
-	    fprintf (fout_R, "%15.10f\n", exp (PDF[i].x));
+    for (int i = 0; i < (int) PDF.size(); i++) {
+	for (int j = 0; j < (int) 10000 * PDF[i].P / total; j++) {
+	  fprintf (fout_R, "%15.10f %.10f\n", exp (PDF[i].x), PDF[i].P);
         }
     }
 }

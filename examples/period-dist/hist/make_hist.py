@@ -23,6 +23,9 @@ hist_color={"adj":"green",\
             "all":"red"\
 }
 
+mu={"all":4.6, "snr":3.8, "adj":7.0}
+sd={"all":8.9, "snr":6.3, "adj":11.8}
+
 for name in hist_name:
     # start of histogram
     ax = fig.add_subplot(111)
@@ -51,20 +54,17 @@ for name in hist_name:
     P.ylim([0, .05])
 
     # plot best-fit distribution
-    if name == "adj":
-        tot = 0
-        for i in range (0, len (x) - 1):
-            if x[i] <= 4:
-                tot += w[i]
+    tot = 0
+    for i in range (0, len (x) - 1):
+        if x[i] <= 4:
+            tot += w[i]
 
-        mu = 0.86
-        sigma = 0.29
-        y = list (map (lambda x: (1/(x * sigma * np.sqrt (2 * np.pi))) * np.exp(-(np.log(x) - mu)**2 / (2 * sigma ** 2)) / 20 * tot, bins))
-        l = P.plot (bins, y, 'k--', linewidth=1.5)
+    y = list (map (lambda x: (1/(x * sd[name] * np.sqrt (2 * np.pi))) * np.exp(-(np.log(x) - mu[name])**2 / (2 * sd[name] ** 2)) * tot, bins))
+    l = P.plot (bins, y, 'k--', linewidth=1.5)
 
     fdata.close()
 
-    fig.savefig(name + "_hist.pdf", format="pdf")
+    fig.savefig(name + "_per_hist.pdf", format="pdf")
 
     fig.clear()
 # end of histogram
