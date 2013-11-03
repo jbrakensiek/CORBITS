@@ -1,7 +1,7 @@
 SHELL = /bin/bash
 CC = g++
-CFLAGS = -c -Wall -O2 -I $(LIB_PATH)
-LDFLAGS = -Wall -O2 -I $(LIB_PATH)
+CFLAGS = -c -Wall -O2 -I $(LIB_PATH) -I $(DATA_PATH)
+LDFLAGS = -Wall -O2 -I $(LIB_PATH) -I $(DATA_PATH)
 
 # library
 
@@ -18,6 +18,12 @@ BASE_PATH = base
 BASE_SRC = $(BASE_PATH)/corbits.cpp
 BASE_OBJ = $(BASE_SRC:.cpp=.o)
 
+# data
+
+DATA_PATH = data
+DATA_SRC = $(DATA_PATH)/koi_input.cpp
+DATA_OBJ = $(DATA_SRC:.cpp=.o)
+
 # examples
 
 EXAMPLES = kepler-11 period-dist mhs-dist solar-system
@@ -27,20 +33,24 @@ KEP11_SRC = $(KEP11_PATH)/Kepler-11.cpp
 KEP11_OBJ = $(KEP11_SRC:.cpp=.o)
 
 PER_PATH = examples/period-dist
-PER_SRC = $(PER_PATH)/koi_input.cpp \
-	$(PER_PATH)/stat_dist.cpp \
+PER_SRC = $(PER_PATH)/stat_dist.cpp \
 	$(PER_PATH)/period_dist.cpp
 PER_OBJ = $(PER_SRC:.cpp=.o)
 
 MHS_PATH = examples/period-dist
-MHS_SRC = $(MHS_PATH)/koi_input.cpp \
-	$(MHS_PATH)/stat_dist.cpp \
+MHS_SRC = $(MHS_PATH)/stat_dist.cpp \
 	$(MHS_PATH)/mhs_dist.cpp
 MHS_OBJ = $(MHS_SRC:.cpp=.o)
 
 SOLSYS_PATH = examples/solar-system
 SOLSYS_SRC = $(SOLSYS_PATH)/solsys.cpp
 SOLSYS_OBJ = $(SOLSYS_SRC:.cpp=.o)
+
+# unit tests
+
+TEST_PATH = test
+TEST_SRC = $(TEST_PATH)/approx_test.cpp
+TEST_OBJ = $(TEST_SRC:.cpp=.o)
 
 # targets
 
@@ -65,11 +75,11 @@ run-kepler-11: kepler-11
 
 # Period ratio distribution
 
-period-dist: lib $(PER_OBJ)
-	$(CC) $(LDFLAGS) $(LIB_OBJ) $(PER_OBJ) -o $(PER_PATH)/$@
+period-dist: lib $(DATA_OBJ) $(PER_OBJ)
+	$(CC) $(LDFLAGS) $(LIB_OBJ) $(DATA_OBJ) $(PER_OBJ) -o $(PER_PATH)/$@
 
-run-period-dist: period-dist $(PER_PATH)/koi-data-edit.txt
-	cd $(MHS_PATH); ./period-dist
+run-period-dist: period-dist $(DATA_PATH)/koi-data-edit.txt
+	cd $(PER_PATH); ./period-dist
 
 period-hist: $(PER_PATH)/hist/adj_hist_py.txt \
 	$(PER_PATH)/hist/all_hist_py.txt \
@@ -78,11 +88,11 @@ period-hist: $(PER_PATH)/hist/adj_hist_py.txt \
 
 # MHS distribution
 
-mhs-dist: lib $(MHS_OBJ)
-	$(CC) $(LDFLAGS) $(LIB_OBJ) $(MHS_OBJ) -o $(MHS_PATH)/$@
+mhs-dist: lib $(DATA_OBJ) $(MHS_OBJ)
+	$(CC) $(LDFLAGS) $(LIB_OBJ) $(DATA_OBJ) $(MHS_OBJ) -o $(MHS_PATH)/$@
 
-run-mhs-dist: mhs-dist $(MHS_PATH)/koi-data-edit.txt
-	cd $(PER_PATH); ./mhs-dist
+run-mhs-dist: mhs-dist $(DATA_PATH)/koi-data-edit.txt
+	cd $(MHS_PATH); ./mhs-dist
 
 # Solar System
 
@@ -91,6 +101,11 @@ solar-system: lib $(SOLSYS_OBJ)
 
 run-solar-system: solar-system
 	cd $(SOLSYS_PATH); ./solar-system 2> /dev/null
+
+# Unit tests
+
+unit-test: lib $(TEST_OBJ)
+	$(CC) $(LDFLAGS) $(LIB_OBJ) $(TEST_OBJ) -o $(TEST_PATH)/$@
 
 # ref: http://mrbook.org/tutorials/make
 .cpp.o:
@@ -105,12 +120,17 @@ clean:
 	$(KEP11_PATH)/kepler-11 \
 	$(PER_PATH)/*.o \
 	$(PER_PATH)/period-dist \
+	$(MHS_PATH)/*.o \
+	$(MHS_PATH)/mhs-dist \
 	$(SOLSYS_PATH)/*.o \
 	$(SOLSYS_PATH)/solar-system \
+	$(TEST_PATH)/*.o \
+	$(TEST_PATH)/unit-test
 
 # remove all output files
 clean-all: clean
-	rm -f $(PER_PATH)/*.txt \
+	rm -f $(DATA_PATH)/*.txt \
+	$(PER_PATH)/*.txt \
 	$(PER_PATH)/stat/*.txt \
 	$(PER_PATH)/hist/*.txt \
 	$(PER_PATH)/hist/*.pdf \
@@ -119,8 +139,8 @@ clean-all: clean
 
 # files
 
-$(PER_PATH)/koi-data-edit.txt:
-	cd $(PER_PATH); ./grab.sh
+$(DATA_PATH)/koi-data-edit.txt:
+	cd $(DATA_PATH); ./grab.sh
 
 $(PER_PATH)/hist/adj_hist_py.txt: run-period-dist
 
