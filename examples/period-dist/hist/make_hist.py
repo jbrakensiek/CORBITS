@@ -22,14 +22,15 @@ hist_color={"adj":"green",\
             "snr":"blue",\
             "all":"red"\
 }
+data_dir = "data/"
 
-mu={"all":4.6, "snr":3.8, "adj":7.0}
-sd={"all":8.9, "snr":6.3, "adj":11.8}
+mu={"all":0.76, "snr":0.74, "adj":0.81}
+sd={"all":0.33, "snr":0.31, "adj":0.32}
 
 for name in hist_name:
     # start of histogram
     ax = fig.add_subplot(111)
-    fdata = open(name + '_hist_py.txt', 'r');
+    fdata = open(data_dir + "per_" + name + '_hist_py.txt', 'r');
     
     # period ratios
     x = parse_list(fdata.readline());
@@ -59,12 +60,12 @@ for name in hist_name:
         if x[i] <= 4:
             tot += w[i]
 
-    y = list (map (lambda x: (1/(x * sd[name] * np.sqrt (2 * np.pi))) * np.exp(-(np.log(x) - mu[name])**2 / (2 * sd[name] ** 2)) * tot, bins))
+    y = list (map (lambda x: (1/(x * sd[name] * np.sqrt (2 * np.pi))) * np.exp(-(np.log(x) - mu[name])**2 / (2 * sd[name] ** 2))/20 * tot, bins))
     l = P.plot (bins, y, 'k--', linewidth=1.5)
 
     fdata.close()
 
-    fig.savefig(name + "_per_hist.pdf", format="pdf")
+    fig.savefig(data_dir + "per_" + name + "_hist.pdf", format="pdf")
 
     fig.clear()
 # end of histogram

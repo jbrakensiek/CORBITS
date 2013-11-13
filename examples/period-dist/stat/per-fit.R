@@ -2,9 +2,9 @@ require(ADGofTest)
 require(psych)
 set.seed(0)
 
-files <- c("all_hist_r.txt",
-           "snr_hist_r.txt",
-	   "adj_hist_r.txt")
+files <- c("data/per_all_hist_r.txt",
+           "data/per_snr_hist_r.txt",
+	   "data/per_adj_hist_r.txt")
 
 mu.steps <- 200
 sd.steps <- 200

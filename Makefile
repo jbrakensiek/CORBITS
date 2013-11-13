@@ -71,7 +71,7 @@ kepler-11: lib $(KEP11_OBJ)
 	$(CC) $(LDFLAGS) $(LIB_OBJ) $(KEP11_OBJ) -o $(KEP11_PATH)/$@
 
 run-kepler-11: kepler-11
-	cd $(KEP11_PATH); ./kepler-11
+	$(KEP11_PATH)/kepler-11
 
 # Period ratio distribution
 
@@ -79,12 +79,12 @@ period-dist: lib $(DATA_OBJ) $(PER_OBJ)
 	$(CC) $(LDFLAGS) $(LIB_OBJ) $(DATA_OBJ) $(PER_OBJ) -o $(PER_PATH)/$@
 
 run-period-dist: period-dist $(DATA_PATH)/koi-data-edit.txt
-	cd $(PER_PATH); ./period-dist
+	$(PER_PATH)/period-dist
 
-period-hist: $(PER_PATH)/hist/adj_hist_py.txt \
-	$(PER_PATH)/hist/all_hist_py.txt \
-	$(PER_PATH)/hist/snr_hist_py.txt
-	cd $(PER_PATH)/hist; python make_hist.py 2> /dev/null
+period-hist: $(DATA_PATH)/per_adj_hist_py.txt \
+	$(DATA_PATH)/per_all_hist_py.txt \
+	$(DATA_PATH)/per_snr_hist_py.txt
+	python $(PER_PATH)/hist/make_hist.py 2> /dev/null
 
 # MHS distribution
 
@@ -92,7 +92,12 @@ mhs-dist: lib $(DATA_OBJ) $(MHS_OBJ)
 	$(CC) $(LDFLAGS) $(LIB_OBJ) $(DATA_OBJ) $(MHS_OBJ) -o $(MHS_PATH)/$@
 
 run-mhs-dist: mhs-dist $(DATA_PATH)/koi-data-edit.txt
-	cd $(MHS_PATH); ./mhs-dist
+	$(MHS_PATH)/mhs-dist
+
+mhs-hist: $(DATA_PATH)/mhs_adj_hist_py.txt \
+	$(DATA_PATH)/mhs_all_hist_py.txt \
+	$(DATA_PATH)/mhs_snr_hist_py.txt
+	python $(MHS_PATH)/hist/make_mhs_hist.py 2> /dev/null
 
 # Solar System
 
@@ -100,12 +105,12 @@ solar-system: lib $(SOLSYS_OBJ)
 	$(CC) $(LDFLAGS) $(LIB_OBJ) $(SOLSYS_OBJ) -o $(SOLSYS_PATH)/$@
 
 run-solar-system: solar-system
-	cd $(SOLSYS_PATH); ./solar-system 2> /dev/null
+	$(SOLSYS_PATH)/solar-system 2> /dev/null
 
 # Unit tests
 
 unit-test: lib $(TEST_OBJ)
-	$(CC) $(LDFLAGS) $(LIB_OBJ) $(TEST_OBJ) -o $(TEST_PATH)/$@
+	$(CC) $(LDFLAGS) $(LIB_OBJ) $(DATA_OBJ) $(TEST_OBJ) -o $(TEST_PATH)/$@
 
 # ref: http://mrbook.org/tutorials/make
 .cpp.o:
@@ -140,10 +145,16 @@ clean-all: clean
 # files
 
 $(DATA_PATH)/koi-data-edit.txt:
-	cd $(DATA_PATH); ./grab.sh
+	$(DATA_PATH)/grab.sh
 
-$(PER_PATH)/hist/adj_hist_py.txt: run-period-dist
+$(DATA_PATH)/per_adj_hist_py.txt: run-period-dist
 
-$(PER_PATH)/hist/all_hist_py.txt: run-period-dist
+$(DATA_PATH)/per_all_hist_py.txt: run-period-dist
 
-$(PER_PATH)/hist/snr_hist_py.txt: run-period-dist
+$(DATA_PATH)/per_snr_hist_py.txt: run-period-dist
+
+$(DATA_PATH)/mhs_adj_hist_py.txt: run-mhs-dist
+
+$(DATA_PATH)/mhs_all_hist_py.txt: run-mhs-dist
+
+$(DATA_PATH)/mhs_snr_hist_py.txt: run-mhs-dist
