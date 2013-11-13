@@ -4,7 +4,7 @@
 #include <ctime>
 #include <algorithm>
 #include "transit.h"
-#define NDATA 9
+#define NDATA 8
 
 using namespace std;
 
@@ -95,7 +95,7 @@ void simulate(FILE *fout) {
 		Q[k++] = P[j];
 	    }
 	}
-	double prob = prob_of_transits_approx(k, Q);
+	// double prob = prob_of_transits_approx(k, Q);
 	sci_value prob2 = prob_of_transits_input_orbit(k, Q_IO);
 	for (int j = 0; j < NDATA; j++) {
 	    fprintf(fout, "%d,", P[j].use);
