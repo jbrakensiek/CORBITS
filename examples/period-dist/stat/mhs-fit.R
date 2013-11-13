@@ -29,8 +29,8 @@ for (file in files) {
 	    mhs.list <- c(mhs.list, mhs.data[koi, 1] + epsilon * rnorm(1))
 	}
     }
-    print(describe(mhs.list))
-    print(str(ad.test(mhs.list, pnorm, mean(mhs.list), sd(mhs.list))))
+    ## print(describe(mhs.list))
+    ## print(str(ad.test(mhs.list, pnorm, mean(mhs.list), sd(mhs.list))))
     stat.best = Inf
     mu.best = mu.lo
     sd.best = sd.lo
@@ -38,7 +38,7 @@ for (file in files) {
     for (i in 0:mu.steps) {
     	for (j in 0:sd.steps) {
 	    mu.cur <- mu.lo + i * mu.step
-	    sd.cur <- sd.lo + i * sd.step
+	    sd.cur <- sd.lo + j * sd.step
 	    # print (c(mu.cur, sd.cur))
 	    mhs.stat <- ad.test(mhs.list, pnorm, mu.cur, sd.cur)
 	    if (mhs.stat$statistic < stat.best) {
