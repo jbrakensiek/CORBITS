@@ -34,10 +34,10 @@ for name in hist_name:
     w = parse_list(fdata.readline());
     
     # number of bins
-    b = 50
+    b = 20
     
     # plot histogram
-    n, bins, patches = P.hist(x, b, range = (0, 100), weights = w, facecolor = hist_color[name], histtype='barstacked', stacked=True)
+    n, bins, patches = P.hist(x, b, range = (0, 60), weights = w, facecolor = hist_color[name], histtype='barstacked', stacked=True)
     ax.set_xlabel('Mutual Hill Sphere Distance')
     ax.set_ylabel('Frequency')
     ax.set_title(hist_title[name])
@@ -54,13 +54,13 @@ for name in hist_name:
         if x[i] <= 100:
             tot += w[i]
     y = list (map (lambda x: (1/(sd * np.sqrt (2 * np.pi))) * \
-        np.exp(-(x - mu)**2 / (2 * sd ** 2)) * 2 * tot, bins))
+        np.exp(-(x - mu)**2 / (2 * sd ** 2)) * 3 * tot, bins))
     l = P.plot (bins, y, 'k--', linewidth=1.5)
 
     fdata.close()
     fstat.close()
 
-    fig.savefig(data_dir + "mhs_" + name + "_hist.pdf", format="pdf")
+    fig.savefig(data_dir + "mhs_" + name + "_hist.eps", format="eps")
 
     fig.clear()
 # end of histogram

@@ -37,7 +37,7 @@ for name in hist_name:
     w = parse_list(fdata.readline());
     
     # number of bins
-    b = 60
+    b = 30
     
     # plot histogram
     n, bins, patches = P.hist(x, b, range = (1, 4), weights = w, facecolor = hist_color[name], histtype='barstacked', stacked=True)
@@ -48,9 +48,9 @@ for name in hist_name:
     # plot resonance values
     for p in res:
         ax.axvline (x = p[0], ls = 'dashed', color = 'black')
-        ax.text (p[0], .0485, p[1], ha='center', color = hist_color[name])
+        ax.text (p[0], .0775, p[1], ha='center', color = hist_color[name])
 
-    P.ylim([0, .05])
+    P.ylim([0, .08])
 
     # read mu and sd
     mu = float(fstat.readline())
@@ -62,7 +62,7 @@ for name in hist_name:
         if x[i] <= 4:
             tot += w[i]
 
-    y = list (map (lambda x: (1/(x * sd * np.sqrt (2 * np.pi))) * np.exp(-(np.log(x) - mu)**2 / (2 * sd ** 2))/20 * tot, bins))
+    y = list (map (lambda x: (1/(x * sd * np.sqrt (2 * np.pi))) * np.exp(-(np.log(x) - mu)**2 / (2 * sd ** 2))/10 * tot, bins))
     l = P.plot (bins, y, 'k--', linewidth=1.5)
 
     # output figure and close files
