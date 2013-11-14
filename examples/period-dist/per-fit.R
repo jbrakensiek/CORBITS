@@ -6,12 +6,18 @@ files <- c("data/per_all_hist_r.txt",
            "data/per_snr_hist_r.txt",
 	   "data/per_adj_hist_r.txt")
 
+output <- c("data/per_all_stat.txt",
+            "data/per_snr_stat.txt",
+	    "data/per_adj_stat.txt")
+
 mu.steps <- 200
 sd.steps <- 200
 list.len <- 1000
 epsilon <- 1e-9
 
+o = 0
 for (file in files) {
+    o = o + 1
     per.data <- read.table (file)
     ok <- (per.data[, 1] <= 4)
     per.data <- per.data[ok,]
@@ -62,4 +68,11 @@ for (file in files) {
 	  as.character(sd.best), ") ",
     	  as.character(stat.best), ", ",
 	  as.character(p.best)))
+    
+    sink(output[o])
+    cat(as.character(mu.best))
+    cat("\n")
+    cat(as.character(sd.best))
+    cat("\n")
+    sink()
 }

@@ -21,13 +21,11 @@ hist_color = {"adj":"green",\
 }
 data_dir = "data/"
 
-mu = {"all":30.7, "snr":23.7, "adj":25.7};
-sd = {"all":18.5, "snr":13.1, "adj":13.5};
-
 for name in hist_name:
     # start of histogram
     ax = fig.add_subplot(111)
-    fdata = open(data_dir + "mhs_" + name + '_hist_py.txt', 'r');
+    fdata = open(data_dir + "mhs_" + name + '_hist_py.txt', 'r')
+    fstat = open(data_dir + "mhs_" + name + "_stat.txt", 'r')
     
     # period ratios
     x = parse_list(fdata.readline());
@@ -46,16 +44,21 @@ for name in hist_name:
 
     P.ylim([0, .2])
 
+    # read mu and sd
+    mu = float(fstat.readline())
+    sd = float(fstat.readline())
+
     # plot best-fit distribution
     tot = 0
     for i in range (0, len (x) - 1):
         if x[i] <= 100:
             tot += w[i]
-    y = list (map (lambda x: (1/(sd[name] * np.sqrt (2 * np.pi))) * \
-        np.exp(-(x - mu[name])**2 / (2 * sd[name] ** 2)) * 2 * tot, bins))
+    y = list (map (lambda x: (1/(sd * np.sqrt (2 * np.pi))) * \
+        np.exp(-(x - mu)**2 / (2 * sd ** 2)) * 2 * tot, bins))
     l = P.plot (bins, y, 'k--', linewidth=1.5)
 
     fdata.close()
+    fstat.close()
 
     fig.savefig(data_dir + "mhs_" + name + "_hist.pdf", format="pdf")
 

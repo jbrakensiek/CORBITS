@@ -5,12 +5,18 @@ files <- c("data/mhs_all_hist_r.txt",
            "data/mhs_snr_hist_r.txt",
 	   "data/mhs_adj_hist_r.txt")
 
+output <- c("data/mhs_all_stat.txt",
+            "data/mhs_snr_stat.txt",
+	    "data/mhs_adj_stat.txt")
+
 mu.steps <- 200
 sd.steps <- 200
 list.len <- 1000
 epsilon <- 1e-9
 
+o = 0
 for (file in files) {
+    o = o + 1
     mhs.data <- read.table (file)
     mhs.data[, 2] <- mhs.data[, 2] / sum(mhs.data[, 2])
 
@@ -53,4 +59,11 @@ for (file in files) {
     	  as.character(mu.best), ", ",
 	  as.character(sd.best), ") ",
     	  as.character(stat.best)))
+
+    sink(output[o])
+    cat(as.character(mu.best))
+    cat("\n")
+    cat(as.character(sd.best))
+    cat("\n")
+    sink()
 }

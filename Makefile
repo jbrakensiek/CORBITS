@@ -88,7 +88,10 @@ run-period-dist: period-dist $(DATA_PATH)/koi-data-edit.txt
 
 period-hist: $(DATA_PATH)/per_adj_hist_py.txt \
 	$(DATA_PATH)/per_all_hist_py.txt \
-	$(DATA_PATH)/per_snr_hist_py.txt
+	$(DATA_PATH)/per_snr_hist_py.txt \
+	$(DATA_PATH)/per_adj_stat.txt \
+	$(DATA_PATH)/per_all_stat.txt \
+	$(DATA_PATH)/per_snr_stat.txt
 	python $(PER_PATH)/make_per_hist.py 2> /dev/null
 
 # MHS distribution
@@ -101,7 +104,10 @@ run-mhs-dist: mhs-dist $(DATA_PATH)/koi-data-edit.txt
 
 mhs-hist: $(DATA_PATH)/mhs_adj_hist_py.txt \
 	$(DATA_PATH)/mhs_all_hist_py.txt \
-	$(DATA_PATH)/mhs_snr_hist_py.txt
+	$(DATA_PATH)/mhs_snr_hist_py.txt \
+	$(DATA_PATH)/mhs_all_stat.txt \
+	$(DATA_PATH)/mhs_adj_stat.txt \
+	$(DATA_PATH)/mhs_snr_stat.txt
 	python $(MHS_PATH)/make_mhs_hist.py 2> /dev/null
 
 # Solar System
@@ -149,14 +155,38 @@ clean-all: clean
 $(DATA_PATH)/koi-data-edit.txt:
 	$(DATA_PATH)/grab.sh
 
-$(DATA_PATH)/per_adj_hist_py.txt: run-period-dist
+$(DATA_PATH)/per_adj_hist_py.txt:
+	run-period-dist
 
-$(DATA_PATH)/per_all_hist_py.txt: run-period-dist
+$(DATA_PATH)/per_all_hist_py.txt:
+	run-period-dist
 
-$(DATA_PATH)/per_snr_hist_py.txt: run-period-dist
+$(DATA_PATH)/per_snr_hist_py.txt:
+	run-period-dist
 
-$(DATA_PATH)/mhs_adj_hist_py.txt: run-mhs-dist
+$(DATA_PATH)/per_adj_stat_py.txt:
+	Rscript $(PER_PATH)/per-fit.R
 
-$(DATA_PATH)/mhs_all_hist_py.txt: run-mhs-dist
+$(DATA_PATH)/per_all_stat_py.txt:
+	Rscript $(PER_PATH)/per-fit.R
 
-$(DATA_PATH)/mhs_snr_hist_py.txt: run-mhs-dist
+$(DATA_PATH)/per_snr_stat_py.txt:
+	Rscript $(PER_PATH)/per-fit.R
+
+$(DATA_PATH)/mhs_adj_hist_py.txt:
+	run-mhs-dist
+
+$(DATA_PATH)/mhs_all_hist_py.txt:
+	run-mhs-dist
+
+$(DATA_PATH)/mhs_snr_hist_py.txt:
+	run-mhs-dist
+
+$(DATA_PATH)/mhs_adj_stat_py.txt:
+	Rscript $(MHS_PATH)/per-fit.R
+
+$(DATA_PATH)/mhs_all_stat_py.txt:
+	Rscript $(MHS_PATH)/per-fit.R
+
+$(DATA_PATH)/mhs_snr_stat_py.txt:
+	Rscript $(MHS_PATH)/per-fit.R
