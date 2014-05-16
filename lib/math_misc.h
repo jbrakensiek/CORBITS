@@ -22,13 +22,15 @@ double const PI = 3.14159265358979;
 
 double const RAD_TO_DEG = 180 / PI;
 
+double const DEG_TO_RAD = 1 / RAD_TO_DEG;
+
 double const EPS = 2e-9; /* margin of error in floating-point calculations */
 
 double const SR_TO_AU = .0046491; /* http://en.wikipedia.org/wiki/Solar_radius */
 
 double const DAYS_IN_YEAR = 365.2425;
 
-/* wikipedia */
+ /* wikipedia */
 double const SR_TO_KM = 696342;
 
 /* wikipedia */

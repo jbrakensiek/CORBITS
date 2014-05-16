@@ -33,7 +33,7 @@ STAT_OBJ = $(STAT_SRC:.cpp=.o)
 
 # examples
 
-EXAMPLES = kepler-11 period-dist mhs-dist solar-system
+EXAMPLES = kepler-11 period-dist mhs-dist solar-system case-trans koi-table
 
 KEP11_PATH = examples/kepler-11
 KEP11_SRC = $(KEP11_PATH)/Kepler-11.cpp
@@ -51,11 +51,13 @@ SOLSYS_PATH = examples/solar-system
 SOLSYS_SRC = $(SOLSYS_PATH)/solsys.cpp
 SOLSYS_OBJ = $(SOLSYS_SRC:.cpp=.o)
 
-# unit tests
+CASE_PATH = examples/case-trans
+CASE_SRC = $(CASE_PATH)/case_trans.cpp
+CASE_OBJ = $(CASE_SRC:.cpp=.o)
 
-TEST_PATH = test
-TEST_SRC = $(TEST_PATH)/approx_test.cpp
-TEST_OBJ = $(TEST_SRC:.cpp=.o)
+KOI_TABLE_PATH = examples/koi-table
+KOI_TABLE_SRC = $(KOI_TABLE_PATH)/koi_table.cpp
+KOI_TABLE_OBJ = $(KOI_TABLE_SRC:.cpp=.o)
 
 # targets
 
@@ -118,10 +120,22 @@ solar-system: lib $(SOLSYS_OBJ)
 run-solar-system: solar-system
 	$(SOLSYS_PATH)/solar-system 2> /dev/null
 
-# Unit tests
+# Transit-region case transition
 
-unit-test: lib $(TEST_OBJ)
-	$(CC) $(LDFLAGS) $(TEST_OBJ) -o $(TEST_PATH)/$@
+case-trans: lib $(CASE_OBJ)
+	$(CC) $(LDFLAGS) $(CASE_OBJ) -o $(CASE_PATH)/$@
+
+run-case-trans: case-trans
+	$(CASE_PATH)/case-trans
+
+# Table of KOI probabilities
+
+koi-table: lib $(KOI_TABLE_OBJ)
+	$(CC) $(LDFLAGS) $(KOI_TABLE_OBJ) -o $(KOI_TABLE_PATH)/$@
+
+run-koi-table: koi-table
+	$(KOI_TABLE_PATH)/koi-table
+
 
 # ref: http://mrbook.org/tutorials/make
 .cpp.o:

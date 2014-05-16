@@ -174,4 +174,3 @@ double PPO_ellipse(orbit O1, orbit O2)
   }
   return prob / (TOTAL * TOTAL / 2);
 }
-
