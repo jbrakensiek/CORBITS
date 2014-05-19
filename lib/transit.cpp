@@ -522,7 +522,6 @@ double prob_of_transits_approx_monte_carlo(int n, planet_ellipse p[], int n_tria
     return 1.0 * n_good / n_trials;
 }
 
-/* no error bars currently */
 sci_value prob_of_transits_input_orbit(int n, input_orbit io[]) {
     planet_ellipse p[n];
     double prob, prob_up, prob_lo;

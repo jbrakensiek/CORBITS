@@ -19,13 +19,14 @@ void set_input_orbit_default (input_orbit &io) {
   io.i = 0;
   io.omega = 0;
   io.Omega = 0;
-  io.P = 365.25;
+  io.P = 1;
   io.r = 0;
   io.r_star = 1;
   io.use = 0;
 }
 
 void fix_input_orbit (input_orbit &io) {
+  io.P *= DAYS_IN_YEAR;
   io.i *= DEG_TO_RAD;
   io.omega *= DEG_TO_RAD;
   io.Omega *= DEG_TO_RAD;
@@ -119,10 +120,10 @@ bool read(FILE* fin, int &len, char* format, input_orbit io[]) {
       }
       fix_input_orbit(io[len]);
       if (did_a && !did_P) {
-	io[len].P = sqrt (pow(io[len].a, 3) / mass_from_radius(io[len].r_star)) * DAYS_IN_YEAR;
+	io[len].P = sqrt (pow(io[len].a, 3) / mass_from_radius(io[len].r_star / SR_TO_AU)) * DAYS_IN_YEAR;
       }
       else if (!did_a && did_P) {
-	io[len].a = radius(mass_from_radius(io[len].r_star), io[len].P);
+	io[len].a = radius(mass_from_radius(io[len].r_star / SR_TO_AU), io[len].P);
       }
     }
   }
@@ -155,7 +156,7 @@ void print_help(char *prog) {
   printf ("  n            the name of the planet (default: NULL)\n");
   printf ("  o            the argument of periapsis in degrees (default: 0)\n");
   printf ("  O            the longitude of the ascending node in degrees (default: 0)\n");
-  printf ("  P            the period of the orbit in days (default: 365.25)\n");
+  printf ("  P            the period of the orbit in years (default: 1)\n");
   printf ("  r            the radius of the planet in earth radii (default: 0)\n");
   printf ("  R            the radius of the star in stellar radii (default: 1)\n");
   printf ("  u            0 explicitly includes the planet, 1 explicitly excludes the  \n               planet from the observation (default: 0)\n");
@@ -238,6 +239,7 @@ int main(int argc, char **argv) {
     }
   }
   else {
+    double total = 0;
     for (int i = 0; i < (1 << len); i++) {
       for (int j = 0; j < len; j++) {
 	io[j].use = ((1 << j) & i) == 0;
@@ -245,14 +247,16 @@ int main(int argc, char **argv) {
       for (int k = 0; k < len; k++) {
 	printf ("%d", io[k].use ^ 1);
       }
-      fprintf (fout, "\n");
       sci_value prob = prob_of_transits_input_orbit(len, io);
-      fprintf (fout, "Probability: %e\n", prob.val);
+      fprintf (fout, " %e", prob.val);
+      total += prob.val;
       if (report_error) {
-	fprintf (fout, "Positive Error: %e\n", prob.pos_err);
-	fprintf (fout, "Negative Error: %e\n", prob.neg_err);
+	fprintf (fout, " %e", prob.pos_err);
+	fprintf (fout, " %e", prob.neg_err);
       }
+      fprintf (fout, "\n");
     }
+    printf ("Total: %e\n", total);
   }
   return 0;
 }
