@@ -22,7 +22,7 @@ void set_input_orbit_default (input_orbit &io) {
   io.P = 1;
   io.r = 0;
   io.r_star = 1;
-  io.use = 0;
+  io.use = 1;
 }
 
 void fix_input_orbit (input_orbit &io) {
@@ -31,7 +31,6 @@ void fix_input_orbit (input_orbit &io) {
   io.omega *= DEG_TO_RAD;
   io.Omega *= DEG_TO_RAD;
   io.r_star *= SR_TO_AU;
-  io.use ^= 1;
 }
 
 bool read(FILE* fin, int &len, char* format, input_orbit io[]) {
@@ -159,7 +158,7 @@ void print_help(char *prog) {
   printf ("  P            the period of the orbit in years (default: 1)\n");
   printf ("  r            the radius of the planet in earth radii (default: 0)\n");
   printf ("  R            the radius of the star in stellar radii (default: 1)\n");
-  printf ("  u            0 explicitly includes the planet, 1 explicitly excludes the  \n               planet from the observation (default: 0)\n");
+  printf ("  u            0 explicitly excludes the planet, 1 explicitly includes the  \n               planet from the observation (default: 1)\n");
   printf ("\n");
   printf ("CORBITS will have an exit status of  0 if successful. If there are\nerrors in the reading of the table, an exit status of 1 will be returned.\nAny other errors will return an exit status of 2.\n");
   printf ("\n");
@@ -245,10 +244,10 @@ int main(int argc, char **argv) {
     double total = 0;
     for (int i = 0; i < (1 << len); i++) {
       for (int j = 0; j < len; j++) {
-	io[j].use = ((1 << j) & i) == 0;
+	io[j].use = ((1 << j) & i) > 0;
       }
       for (int k = 0; k < len; k++) {
-	printf ("%d", io[k].use ^ 1);
+	printf ("%d", io[k].use);
       }
       sci_value prob = prob_of_transits_input_orbit(len, io);
       fprintf (fout, " %e", prob.val);
@@ -259,7 +258,7 @@ int main(int argc, char **argv) {
       }
       fprintf (fout, "\n");
     }
-    printf ("Total: %e\n", total);
+    // printf ("Total: %e\n", total);
   }
   return 0;
 }
