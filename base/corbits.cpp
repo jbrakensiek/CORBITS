@@ -163,6 +163,9 @@ void print_help(char *prog) {
   printf ("\n");
   printf ("CORBITS will have an exit status of  0 if successful. If there are\nerrors in the reading of the table, an exit status of 1 will be returned.\nAny other errors will return an exit status of 2.\n");
   printf ("\n");
+  printf ("Copyright (c) 2014, Joshua Brakensiek and Darin Ragozzine\n");
+  printf ("CORBITS is licensed under the MIT license.\n");
+  printf ("If you find CORBITS useful for academic purposes, please cite Brakensiek & Ragozzine, 2014 (in prep).\n");
   printf ("For more information about CORBITS:\n");
   printf ("<https://www.github.com/jbrakensiek/CORBITS/>\n");
 }
