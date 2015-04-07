@@ -96,6 +96,9 @@ double prob_of_transits_approx(int n, planet_ellipse p[]);
 double prob_of_transits_approx_monte_carlo(int n, planet_ellipse p[], int n_trials);
 
 /* Finds the prob of transit with error bars */
+sci_value prob_of_transits_orbit(int n, orbit o[]);
+
+/* Finds the prob of transit with error bars */
 sci_value prob_of_transits_input_orbit(int n, input_orbit io[]);
 
 /* finds the probability of all n observations with an MC algorithm */

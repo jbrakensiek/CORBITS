@@ -1,6 +1,6 @@
 SHELL = /bin/bash
 CC = g++
-CFLAGS = -c -Wall -O2 -I $(LIB_PATH) -I $(DATA_PATH) -I $(STAT_PATH)
+CFLAGS = -c -fPIC -Wall -O2 -I $(LIB_PATH) -I $(DATA_PATH) -I $(STAT_PATH)
 LDFLAGS = -Wall -O2 -I $(LIB_PATH) -I $(DATA_PATH) -I $(STAT_PATH) $(LIB_OBJ) $(DATA_OBJ) $(STAT_OBJ)
 
 
@@ -10,8 +10,10 @@ LIB_PATH = lib
 LIB = 	$(LIB_PATH)/math_misc.cpp \
 	$(LIB_PATH)/point3D.cpp \
 	$(LIB_PATH)/transit.cpp \
-	$(LIB_PATH)/occultations.cpp
+	$(LIB_PATH)/occultations.cpp \
+	$(LIB_PATH)/c_interface.cpp 
 LIB_OBJ = $(LIB:.cpp=.o)
+LIB_NAME = libcorbits.so
 
 # base
 
@@ -64,6 +66,7 @@ KOI_TABLE_OBJ = $(KOI_TABLE_SRC:.cpp=.o)
 all: lib base examples
 
 lib: $(LIB_OBJ) $(DATA_OBJ) $(STAT_OBJ)
+	$(CC) -shared -o$(LIB_NAME) $(LIB_OBJ) $(DATA_OBJ) $(STAT_OBJ)
 
 corbits: base
 
