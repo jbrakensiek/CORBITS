@@ -41,7 +41,7 @@ function prob( sigma_i::Cdouble )
     #sum_k = 0.0
     for k in 1:length(P)
       for j in 1:length(P)
-        inc[j] = rand_Rayleigh(sigma_i) * 180.0/pi
+        inc[j] = rand_Rayleigh(sigma_i) * pi/180.0
         Omega[j] = 2pi*rand()
         use[j] = (k!=j) ? 1 : 0
       end # j
