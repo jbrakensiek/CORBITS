@@ -43,8 +43,9 @@ int input_data(const char* FILENAME, kepler_input kepler_data[NDATA]) {
 	kepler_data[i].solRad = atof(s);
       else if (j == 12)
 	kepler_data[i].SNR = atof(s);
-      else if (j == 13)
-	kepler_data[i].log_g = atof(s);
+      // removed in more recent data releases
+      //   else if (j == 13)
+      //	kepler_data[i].log_g = atof(s);
       nread = j + 1;
     }
     if (nread != COLUMNS) break;

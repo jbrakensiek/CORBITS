@@ -17,6 +17,7 @@ BB# ignore edited files
 # ignore object files or exectutable code
 *.exe
 *.o
+*.so
 *.stackdump
 
 # ignore certain folders

@@ -41,6 +41,10 @@ KEP11_PATH = examples/kepler-11
 KEP11_SRC = $(KEP11_PATH)/Kepler-11.cpp
 KEP11_OBJ = $(KEP11_SRC:.cpp=.o)
 
+KEP90_PATH = examples/kepler-90
+KEP90_SRC = $(KEP90_PATH)/Kepler-90.cpp
+KEP90_OBJ = $(KEP90_SRC:.cpp=.o)
+
 PER_PATH = examples/period-dist
 PER_SRC = $(PER_PATH)/period_dist.cpp
 PER_OBJ = $(PER_SRC:.cpp=.o)
@@ -83,6 +87,14 @@ kepler-11: lib $(KEP11_OBJ)
 run-kepler-11: kepler-11
 	$(KEP11_PATH)/kepler-11
 
+# Kepler-90
+
+kepler-90: lib $(KEP90_OBJ)
+	$(CC) $(LDFLAGS) $(KEP90_OBJ) -o $(KEP90_PATH)/$@
+
+run-kepler-90: kepler-90
+	$(KEP90_PATH)/kepler-90
+
 # Period ratio distribution
 
 period-dist: lib $(DATA_OBJ) $(PER_OBJ)
@@ -97,7 +109,7 @@ period-hist: $(DATA_PATH)/per_adj_hist_py.txt \
 	$(DATA_PATH)/per_adj_stat.txt \
 	$(DATA_PATH)/per_all_stat.txt \
 	$(DATA_PATH)/per_snr_stat.txt
-	python $(PER_PATH)/make_per_hist.py 2> /dev/null
+	python $(PER_PATH)/make_per_hist.py #2> /dev/null
 
 # MHS distribution
 
@@ -113,7 +125,7 @@ mhs-hist: $(DATA_PATH)/mhs_adj_hist_py.txt \
 	$(DATA_PATH)/mhs_all_stat.txt \
 	$(DATA_PATH)/mhs_adj_stat.txt \
 	$(DATA_PATH)/mhs_snr_stat.txt
-	python $(MHS_PATH)/make_mhs_hist.py 2> /dev/null
+	python $(MHS_PATH)/make_mhs_hist.py #2> /dev/null
 
 # Solar System
 
@@ -172,38 +184,20 @@ clean-all: clean
 $(DATA_PATH)/koi-data-edit.txt:
 	$(DATA_PATH)/grab.sh
 
-$(DATA_PATH)/per_adj_hist_py.txt:
-	run-period-dist
+$(DATA_PATH)/per_adj_hist_py.txt: run-period-dist
 
-$(DATA_PATH)/per_all_hist_py.txt:
-	run-period-dist
+$(DATA_PATH)/per_all_hist_py.txt: run-period-dist
 
-$(DATA_PATH)/per_snr_hist_py.txt:
-	run-period-dist
+$(DATA_PATH)/per_snr_hist_py.txt: run-period-dist
 
-$(DATA_PATH)/per_adj_stat_py.txt:
+$(DATA_PATH)/per_adj_stat%txt $(DATA_PATH)/per_all_stat%txt $(DATA_PATH)/per_snr_stat%txt:
 	Rscript $(PER_PATH)/per-fit.R
 
-$(DATA_PATH)/per_all_stat_py.txt:
-	Rscript $(PER_PATH)/per-fit.R
+$(DATA_PATH)/mhs_adj_hist_py.txt: run-mhs-dist
 
-$(DATA_PATH)/per_snr_stat_py.txt:
-	Rscript $(PER_PATH)/per-fit.R
+$(DATA_PATH)/mhs_all_hist_py.txt: run-mhs-dist
 
-$(DATA_PATH)/mhs_adj_hist_py.txt:
-	run-mhs-dist
+$(DATA_PATH)/mhs_snr_hist_py.txt: run-mhs-dist
 
-$(DATA_PATH)/mhs_all_hist_py.txt:
-	run-mhs-dist
-
-$(DATA_PATH)/mhs_snr_hist_py.txt:
-	run-mhs-dist
-
-$(DATA_PATH)/mhs_adj_stat_py.txt:
-	Rscript $(MHS_PATH)/per-fit.R
-
-$(DATA_PATH)/mhs_all_stat_py.txt:
-	Rscript $(MHS_PATH)/per-fit.R
-
-$(DATA_PATH)/mhs_snr_stat_py.txt:
-	Rscript $(MHS_PATH)/per-fit.R
+$(DATA_PATH)/mhs_adj_stat%txt $(DATA_PATH)/mhs_all_stat%txt $(DATA_PATH)/mhs_snr_stat%txt:
+	Rscript $(MHS_PATH)/mhs-fit.R

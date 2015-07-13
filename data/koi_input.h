@@ -1,5 +1,5 @@
-#define NDATA 5000
-#define COLUMNS 14
+#define NDATA 20000
+#define COLUMNS 13
 
 // not all fields are necessarily used by an implementation of input_data()
 typedef struct {
