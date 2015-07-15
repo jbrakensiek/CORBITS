@@ -10,7 +10,7 @@
 #include <algorithm>
 #define BINWIDTH  1
 #define BINNUM    100
-#define SNR_CUT   20
+#define SNR_CUT   16
 #define B_CUT     .80
 #define RES_WIDTH 12
 #define MMI 5

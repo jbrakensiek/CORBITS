@@ -67,12 +67,14 @@ KOI_TABLE_OBJ = $(KOI_TABLE_SRC:.cpp=.o)
 
 # targets
 
-all: lib base examples
+all: lib base examples data
 
 lib: $(LIB_OBJ) $(DATA_OBJ) $(STAT_OBJ)
 	$(CC) -shared -o$(LIB_NAME) $(LIB_OBJ) $(DATA_OBJ) $(STAT_OBJ)
 
 corbits: base
+
+data: $(DATA_PATH)/koi-data-edit.txt
 
 base: lib $(BASE_OBJ)
 	$(CC) $(LDFLAGS) $(BASE_OBJ) -o $(BASE_PATH)/corbits
