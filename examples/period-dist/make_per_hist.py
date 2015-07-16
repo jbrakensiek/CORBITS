@@ -43,7 +43,7 @@ for name in hist_name:
     n, bins, patches = P.hist(x, b, range = (1, 4), weights = w, facecolor = hist_color[name], histtype='barstacked', stacked=True)
     ax.set_xlabel('Period Ratio')
     ax.set_ylabel('Frequency')
-    ax.set_title(hist_title[name])
+#    ax.set_title(hist_title[name])
     
     # plot resonance values
     for p in res:
