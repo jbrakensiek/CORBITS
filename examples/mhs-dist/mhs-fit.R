@@ -1,13 +1,13 @@
 require(ADGofTest)
 require(psych)
 
-files <- c("data/mhs_all_hist_r.txt",
-           "data/mhs_snr_hist_r.txt",
-	   "data/mhs_adj_hist_r.txt")
+files <- c("../../data/mhs_all_hist_r.txt",
+           "../../data/mhs_snr_hist_r.txt",
+	   "../../data/mhs_adj_hist_r.txt")
 
-output <- c("data/mhs_all_stat.txt",
-            "data/mhs_snr_stat.txt",
-	    "data/mhs_adj_stat.txt")
+output <- c("../../data/mhs_all_stat.txt",
+            "../../data/mhs_snr_stat.txt",
+	    "../../data/mhs_adj_stat.txt")
 
 mu.steps <- 200
 sd.steps <- 200

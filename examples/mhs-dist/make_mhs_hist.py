@@ -19,7 +19,7 @@ hist_color = {"adj":"green",\
             "snr":"blue",\
             "all":"red"\
 }
-data_dir = "data/"
+data_dir = "../../data/"
 
 for name in hist_name:
     # start of histogram

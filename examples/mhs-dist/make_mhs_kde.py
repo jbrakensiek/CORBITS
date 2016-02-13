@@ -20,7 +20,7 @@ kde_color = {"adj":"green",\
             "snr":"blue",\
             "all":"red"\
 }
-data_dir = "data/"
+data_dir = "../../data/"
 
 for name in kde_name:
     # start of kde

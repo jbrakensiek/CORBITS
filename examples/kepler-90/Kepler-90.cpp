@@ -22,7 +22,7 @@ planet_ellipse planets90[10];
 
 void read_input()
 {
-    FILE *fin = fopen("examples/kepler-90/Kepler-90.in", "r");
+    FILE *fin = fopen("Kepler-90.in", "r");
     fscanf (fin, "%d", &n_planets);
     // fprintf (stderr, "%d\n", n_planets);
     for (int i = 0; i < n_planets; i++)

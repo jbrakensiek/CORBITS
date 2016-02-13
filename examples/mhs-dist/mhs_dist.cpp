@@ -196,34 +196,34 @@ void print_results()
 {
   FILE *fout_dist, *fout_hist, *fout_cdf, *fout_py, *fout_R;
   if (analysis == 0) {
-    fout_dist = fopen(nr?"data/mhs_all_dist_nr.txt":
-		      "data/mhs_all_dist.txt", "w");
-    fout_hist = fopen(nr?"data/mhs_all_hist_nr.txt":
-		      "data/mhs_all_hist.txt", "w");
-    fout_cdf  = fopen(nr?"data/mhs_all_CDF_nr.txt":
-		      "data/mhs_all_CDF.txt", "w");
-    fout_py   = fopen("data/mhs_all_hist_py.txt", "w");
-    fout_R    = fopen("data/mhs_all_hist_r.txt", "w");
+    fout_dist = fopen(nr?"../../data/mhs_all_dist_nr.txt":
+		      "../../data/mhs_all_dist.txt", "w");
+    fout_hist = fopen(nr?"../../data/mhs_all_hist_nr.txt":
+		      "../../data/mhs_all_hist.txt", "w");
+    fout_cdf  = fopen(nr?"../../data/mhs_all_CDF_nr.txt":
+		      "../../data/mhs_all_CDF.txt", "w");
+    fout_py   = fopen("../../data/mhs_all_hist_py.txt", "w");
+    fout_R    = fopen("../../data/mhs_all_hist_r.txt", "w");
   }
   else if (analysis == 1) {
-    fout_dist = fopen(nr?"data/mhs_snr_dist_nr.txt":
-		      "data/mhs_snr_dist.txt", "w");
-    fout_hist = fopen(nr?"data/mhs_snr_hist_nr.txt":
-		      "data/mhs_snr_hist.txt", "w");
-    fout_cdf  = fopen(nr?"data/mhs_snr_CDF_nr.txt":
-		      "data/mhs_snr_CDF.txt", "w");
-    fout_py   = fopen("data/mhs_snr_hist_py.txt", "w");
-    fout_R    = fopen("data/mhs_snr_hist_r.txt", "w");
+    fout_dist = fopen(nr?"../../data/mhs_snr_dist_nr.txt":
+		      "../../data/mhs_snr_dist.txt", "w");
+    fout_hist = fopen(nr?"../../data/mhs_snr_hist_nr.txt":
+		      "../../data/mhs_snr_hist.txt", "w");
+    fout_cdf  = fopen(nr?"../../data/mhs_snr_CDF_nr.txt":
+		      "../../data/mhs_snr_CDF.txt", "w");
+    fout_py   = fopen("../../data/mhs_snr_hist_py.txt", "w");
+    fout_R    = fopen("../../data/mhs_snr_hist_r.txt", "w");
   }
   else {
-    fout_dist = fopen(nr?"data/mhs_adj_dist_nr.txt":
-		      "data/mhs_adj_dist.txt", "w");
-    fout_hist = fopen(nr?"data/mhs_adj_hist_nr.txt":
-		      "data/mhs_adj_hist.txt", "w");
-    fout_cdf  = fopen(nr?"data/mhs_adj_CDF_nr.txt":
-		      "data/mhs_adj_CDF.txt", "w");
-    fout_py   = fopen("data/mhs_adj_hist_py.txt", "w");
-    fout_R    = fopen("data/mhs_adj_hist_r.txt", "w");
+    fout_dist = fopen(nr?"../../data/mhs_adj_dist_nr.txt":
+		      "../../data/mhs_adj_dist.txt", "w");
+    fout_hist = fopen(nr?"../../data/mhs_adj_hist_nr.txt":
+		      "../../data/mhs_adj_hist.txt", "w");
+    fout_cdf  = fopen(nr?"../../data/mhs_adj_CDF_nr.txt":
+		      "../../data/mhs_adj_CDF.txt", "w");
+    fout_py   = fopen("../../data/mhs_adj_hist_py.txt", "w");
+    fout_R    = fopen("../../data/mhs_adj_hist_r.txt", "w");
   }
   // PDF of period distribution
   for (int i = 0; i < (int) PDF.size(); i++) {
@@ -264,7 +264,7 @@ void print_results()
 int main()
 {
   // Read KOI data from file
-  ndata = input_data("data/koi-data-edit.txt", kepler_data);
+  ndata = input_data("../../data/koi-data-edit.txt", kepler_data);
   fprintf(stderr, "Read data\n\n");
 
   for (analysis = 0; analysis <= 2; analysis++) {
