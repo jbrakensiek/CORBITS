@@ -113,6 +113,14 @@ period-hist: $(DATA_PATH)/per_adj_hist_py.txt \
 	$(DATA_PATH)/per_snr_stat.txt
 	python $(PER_PATH)/make_per_hist.py #2> /dev/null
 
+period-kde: $(DATA_PATH)/per_adj_hist_py.txt \
+	$(DATA_PATH)/per_all_hist_py.txt \
+	$(DATA_PATH)/per_snr_hist_py.txt \
+	$(DATA_PATH)/per_adj_stat.txt \
+	$(DATA_PATH)/per_all_stat.txt \
+	$(DATA_PATH)/per_snr_stat.txt
+	python $(PER_PATH)/make_per_kde.py #2> /dev/null
+
 # MHS distribution
 
 mhs-dist: lib $(DATA_OBJ) $(MHS_OBJ)
@@ -128,6 +136,14 @@ mhs-hist: $(DATA_PATH)/mhs_adj_hist_py.txt \
 	$(DATA_PATH)/mhs_adj_stat.txt \
 	$(DATA_PATH)/mhs_snr_stat.txt
 	python $(MHS_PATH)/make_mhs_hist.py #2> /dev/null
+
+mhs-kde: $(DATA_PATH)/mhs_adj_hist_py.txt \
+	$(DATA_PATH)/mhs_all_hist_py.txt \
+	$(DATA_PATH)/mhs_snr_hist_py.txt \
+	$(DATA_PATH)/mhs_all_stat.txt \
+	$(DATA_PATH)/mhs_adj_stat.txt \
+	$(DATA_PATH)/mhs_snr_stat.txt
+	python $(MHS_PATH)/make_mhs_kde.py #2> /dev/null
 
 # Solar System
 
