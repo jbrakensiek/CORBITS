@@ -1,7 +1,7 @@
 # Test comparison for Kepler-11 example
 const DAYS_IN_YEAR = 365.2425
 const SR_TO_AU = 0.0046491;   #  /* http://en.wikipedia.org/wiki/Solar_radius */
-global const LIB_CORBITS = find_library(["libcorbits.so"],[".","..","../..","/usr/local/lib"])
+global const LIB_CORBITS = Libdl.find_library(["libcorbits.so"],[".","..","../..","/usr/local/lib"])
 
 # Radius and Mass of Kepler-11 from kepler.nasa.gov
 R11 = 1.10;
@@ -31,7 +31,7 @@ end
       
 function rand_Rayleigh(sigma::Real)
     # // inverse CDF based on http://en.wikipedia.org/wiki/Rayleigh_distribution
-    return sqrt (-2.0*log(rand()) * sigma^2);
+    return sqrt(-2.0*log(rand()) * sigma^2);
 end
 
 function prob( sigma_i::Cdouble )
@@ -59,6 +59,5 @@ for i in linspace(0.0,6.0,61)
    curp = prob(i *sqrt(2.0/pi) )
    print(i, ' ', curp, '\n')
 end
-
 
 
