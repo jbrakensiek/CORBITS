@@ -109,9 +109,9 @@ int main()
     // Source of data
     // http://ssd.jpl.nasa.gov/?planet_phys_par
     // http://ssd.jpl.nasa.gov/?planet_pos
-    FILE *fin  = fopen("data/solsys.in","r");
+    FILE *fin  = fopen("../../data/solsys.in","r");
     assert (fin != NULL);
-    FILE *fout = fopen("data/solsys.csv","w");
+    FILE *fout = fopen("../../data/solsys.csv","w");
   
     read_input(fin);
     fclose(fin);

@@ -19,7 +19,7 @@ hist_color = {"adj":"green",\
             "snr":"blue",\
             "all":"red"\
 }
-data_dir = "data/"
+data_dir = "../../data/"
 
 for name in hist_name:
     # start of histogram
@@ -40,7 +40,7 @@ for name in hist_name:
     n, bins, patches = P.hist(x, b, range = (0, 60), weights = w, facecolor = hist_color[name], histtype='barstacked', stacked=True)
     ax.set_xlabel('Mutual Hill Sphere Distance')
     ax.set_ylabel('Frequency')
-    ax.set_title(hist_title[name])
+    # ax.set_title(hist_title[name])
 
     P.ylim([0, .2])
 

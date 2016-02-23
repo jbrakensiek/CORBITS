@@ -32,7 +32,7 @@ double prob(int n_planets, input_orbit* io, double sigma_i) {
 
 void print_table() {
   // OPEN OUTPUT FILE
-  FILE *fout = fopen ("data/koi.tex", "w");
+  FILE *fout = fopen ("../../data/koi.tex", "w");
   if (fout == NULL) exit (1);
 
   double angle[N_INCLINATIONS] = {0, 1, 2, 10};
@@ -108,6 +108,6 @@ void print_table() {
 }
 
 int main() {
-  ndata = input_data("data/koi-data-edit.txt", koi);
+  ndata = input_data("../../data/koi-data-edit.txt", koi);
   print_table();
 }

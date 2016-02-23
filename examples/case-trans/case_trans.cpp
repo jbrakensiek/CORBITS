@@ -20,9 +20,9 @@ double Rayleigh_PDF(double x, double sigma) {
 }
 
 int main() {
-  int num = input_data("data/koi-data-edit.txt", koi);
+  int num = input_data("../../data/koi-data-edit.txt", koi);
   input_orbit io[2];
-  FILE *fout = fopen("data/trans.csv", "w");
+  FILE *fout = fopen("../../data/trans.csv", "w");
   fprintf(fout, "Per1,Per2,Trans12,Trans23\n");
   for (int j = 1; j < num; j++) {
     for (int k = j - 1; k >= 0 && koi[j].KIC == koi[k].KIC; k--) {
