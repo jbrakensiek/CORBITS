@@ -90,19 +90,19 @@ crossing intersection_all(planet_ellipse a, planet_ellipse b);
 input_orbit orbit_to_input_orbit(orbit o);
 
 /* finds the prob of all n observations with an analytic approx algorithm */
-double prob_of_transits_approx(int n, planet_ellipse p[]);
+double prob_of_transits_approx(const int n, planet_ellipse p[]);
 
 /* finds the probability of all n observations with an approx MC algorithm */
-double prob_of_transits_approx_monte_carlo(int n, planet_ellipse p[], int n_trials);
+double prob_of_transits_approx_monte_carlo(const int n, planet_ellipse p[], int n_trials);
 
 /* Finds the prob of transit with error bars */
-sci_value prob_of_transits_orbit(int n, orbit o[]);
+sci_value prob_of_transits_orbit(const int n, orbit o[]);
 
 /* Finds the prob of transit with error bars */
-sci_value prob_of_transits_input_orbit(int n, input_orbit io[]);
+sci_value prob_of_transits_input_orbit(const int n, input_orbit io[]);
 
 /* finds the probability of all n observations with an MC algorithm */
-double prob_of_transits_monte_carlo(int n, orbit o[], int n_trials);
+double prob_of_transits_monte_carlo(const int n, orbit o[], int n_trials);
 
 /* reconstructs a point, given a pole */
 /* inverse of relative_angle from point3D.c */
