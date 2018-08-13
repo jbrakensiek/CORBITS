@@ -287,7 +287,7 @@ crossing intersection_all(planet_ellipse a, planet_ellipse b)
     return all_points;
 }
 
-double prob_of_transits_approx(int n, planet_ellipse p[])
+double prob_of_transits_approx(const int n, planet_ellipse p[])
 {
     crossing points[n][n];
     int i, j, k;
@@ -507,7 +507,7 @@ double prob_of_transits_approx(int n, planet_ellipse p[])
     return ans;
 }
 
-double prob_of_transits_approx_monte_carlo(int n, planet_ellipse p[], int n_trials)
+double prob_of_transits_approx_monte_carlo(const int n, planet_ellipse p[], int n_trials)
 {
     int n_good = 0;
     int i;
@@ -522,7 +522,7 @@ double prob_of_transits_approx_monte_carlo(int n, planet_ellipse p[], int n_tria
     return 1.0 * n_good / n_trials;
 }
 
-sci_value prob_of_transits_input_orbit(int n, input_orbit io[]) {
+sci_value prob_of_transits_input_orbit(const int n, input_orbit io[]) {
     planet_ellipse p[n];
     double prob, prob_up, prob_lo;
     int i = 0;
@@ -541,7 +541,7 @@ sci_value prob_of_transits_input_orbit(int n, input_orbit io[]) {
     return sci_value(prob, prob_up - prob, prob - prob_lo);
 }
 
-sci_value prob_of_transits_orbit(int n, orbit o[]) {
+sci_value prob_of_transits_orbit(const int n, orbit o[]) {
     planet_ellipse p[n];
     double prob, prob_up, prob_lo;
     int i = 0;
@@ -560,7 +560,7 @@ sci_value prob_of_transits_orbit(int n, orbit o[]) {
     return sci_value(prob, prob_up - prob, prob - prob_lo);
 }
 
-double prob_of_transits_monte_carlo(int n, orbit o[], int n_trials)
+double prob_of_transits_monte_carlo(const int n, orbit o[], int n_trials)
 {
     int n_good = 0;
     int i;

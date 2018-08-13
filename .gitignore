@@ -19,6 +19,7 @@ BB# ignore edited files
 *.o
 *.so
 *.stackdump
+*.mem
 
 # ignore certain folders
 asy
