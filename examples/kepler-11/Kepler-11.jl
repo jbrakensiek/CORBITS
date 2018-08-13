@@ -1,7 +1,12 @@
 # Test comparison for Kepler-11 example
 const DAYS_IN_YEAR = 365.2425
 const SR_TO_AU = 0.0046491;   #  /* http://en.wikipedia.org/wiki/Solar_radius */
-global const LIB_CORBITS = Libdl.find_library(["libcorbits.so"],[".","..","../..","/usr/local/lib"])
+if VERSION >= v"0.7"
+  using Pkg, Libdl
+  global const LIB_CORBITS = Libdl.find_library(["libcorbits.so"],[".",joinpath(Pkg.devdir(),"CORBITS")])
+else
+  global const LIB_CORBITS = Libdl.find_library(["libcorbits.so"],[".","..","../..","/usr/local/lib"])
+end
 
 # Radius and Mass of Kepler-11 from kepler.nasa.gov
 R11 = 1.10;
@@ -10,7 +15,7 @@ M11 = 0.95;
 P = [ 10.30375, 13.02502, 22.68719, 31.99590, 46.68876, 74.34319, 118.37774 ]
 use = ones(Cint,length(P))
 use[6] = 0 
-a = cbrt((P./DAYS_IN_YEAR).^2 .* M11)
+a = cbrt.((P./DAYS_IN_YEAR).^2 .* M11)
 r_star = R11 * SR_TO_AU
 r = zeros(length(P))
 e = zeros(length(P))
@@ -55,7 +60,8 @@ end # prob
 
 
 # Print outputs for comparison to C++ version on Kepler-11 example
-for i in linspace(0.0,6.0,61)
+#for i in linspace(0.0,6.0,61)
+for i in range(0.0,stop=6.0,length=61)
    curp = prob(i *sqrt(2.0/pi) )
    print(i, ' ', curp, '\n')
 end
