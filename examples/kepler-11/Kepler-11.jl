@@ -3,7 +3,8 @@ const DAYS_IN_YEAR = 365.2425
 const SR_TO_AU = 0.0046491;   #  /* http://en.wikipedia.org/wiki/Solar_radius */
 if VERSION >= v"0.7"
   using Pkg, Libdl
-  global const LIB_CORBITS = Libdl.find_library(["libcorbits.so"],[".",joinpath(Pkg.devdir(),"CORBITS")])
+  #global const LIB_CORBITS = Libdl.find_library(["libcorbits.so"],[".",joinpath(Pkg.devdir(),"CORBITS")])
+  global const LIB_CORBITS = Libdl.find_library(["libcorbits.so"],[joinpath(dirname(pathof(CORBITS)),"..")])
 else
   global const LIB_CORBITS = Libdl.find_library(["libcorbits.so"],[".","..","../..","/usr/local/lib"])
 end
