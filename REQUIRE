@@ -1,0 +1,5 @@
+# REQUIRE file for Julia Package manager
+julia
+#Pkg
+#Libdl
+
