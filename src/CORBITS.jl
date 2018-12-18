@@ -7,7 +7,7 @@ if VERSION >= v"0.7.0-"
    using Libdl
    using Pkg
    using CORBITS
-   global const LIB_CORBITS = Libdl.find_library(["libcorbits.so"],[".",joinpath(dirname(pathof(CORBITS))),"/usr/local/lib"])  # WARNING: Assumes can find libcorbits.so
+   global const LIB_CORBITS = Libdl.find_library(["libcorbits.so"],[joinpath(dirname(pathof(CORBITS)),".."),"/usr/local/lib"] ) # WARNING: Assumes can find libcorbits.so
 elseif VERSION >= v"0.4.0-"
    global const LIB_CORBITS = Libdl.find_library(["libcorbits.so"],[".",joinpath(Pkg.dir(),"ExoplanetsSysSim/"),joinpath(Pkg.dir(),"CORBITS/"),"/usr/local/lib"])  # WARNING: Assumes can find libcorbits.so
 else
