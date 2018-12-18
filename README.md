@@ -1,19 +1,25 @@
-CORBITS
-=======
-
-CORBITS is the Computed Occurrence of Revolving Bodies for the Investigation of Transiting Systems by Joshua Brakensiek and Darin Ragozzine.
+CORBITS.jl
+==========
+CORBITS is the Computed Occurrence of Revolving Bodies for the Investigation of Transiting Systems.
+CORBITS.jl is a Julia package that makes it easy for researchers to build and call code contained in the [CORBITS library written in C](https://github.com/jbrakensiek/CORBITS.git) by Joshua Brakensiek and Darin Ragozzine.
 
 Introduction
 ------------
 
-To start using CORBITS, clone the repository.
+To start using CORBITS.jl, 
+
+    julia -e 'import Pkg; Pkg.add("CORBITS") 
+  
+Alternatively, you can clone and build the C library.  First, you'd clone the repository.
 
     git clone https://github.com/jbrakensiek/CORBITS.git
 
-You can build the CORBITS library and usage examples by typing `make`.  To only build the CORBITS library, type `make lib`.
+Then, you can build the CORBITS library and usage examples by typing `make`.  To only build the CORBITS library, type `make lib`.  If you want to call CORBITS from Julia or other languages, then you need to help them find the library.
 
 Requirements
 ------------
+
+If using CORBITS.jl, then the Julia (>=v0.7.0) package manager should take care of things for you.
 
 To use the base of CORBITS (the library and CLI), only a reasonably modern version of g++ is necessary. To fully utilize some of the examples, there are additional requirements.
 
@@ -23,7 +29,7 @@ To use the base of CORBITS (the library and CLI), only a reasonably modern versi
 Examples
 --------
 
-The following usage examples are available for CORBITS. 
+The following examples of using the CORBITS C library are available.
 
 * `kepler-11`: Reproduces the data making the golden curve in Figure 4 of Lissauer, et. al., 2011.  See [here](http://arxiv.org/abs/1102.0291).
 * `kepler-90`: Same as `kepler-11`, except run on the Kepler 90 dataset.
@@ -37,4 +43,4 @@ To build an example, type `make name-of-example`.  To run it, type `make run-nam
 
 -------
 
-If you find CORBITS useful, please cite (Brakensiek & Ragozzine, in prep.).
+If you find CORBITS useful, please cite (Brakensiek & Ragozzine (2016) ApJ, 821, 47.  [doi](https://ui.adsabs.harvard.edu/link_gateway/2016ApJ...821...47B/doi:10.3847/0004-637X/821/1/47) ).
