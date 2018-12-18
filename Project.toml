@@ -1,0 +1,6 @@
+authors = ["Eric Ford <eford@psu.edu>"]
+name = "CORBITS"
+uuid = "2ef0fd6c-02ed-11e9-22ee-f18eda6e5e26"
+version = "0.1.0"
+
+[deps]
