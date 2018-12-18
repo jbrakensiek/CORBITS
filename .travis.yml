@@ -3,3 +3,7 @@ os:
   - linux
 julia:
   - 1.0
+branches:
+  only:
+  - master
+
